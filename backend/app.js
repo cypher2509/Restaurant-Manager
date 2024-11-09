@@ -3,21 +3,21 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const router = express.Router();
+var bodyParser = require('body-parser');
+
 
 app.use(express.urlencoded({extended:true}));
+app.use(bodyParser.json())
+
+
 router.get('/', function (req, res, next) {
-    console.log("Router Working");
+    console.log("Home");
     res.end();
 })
 
-
+//demo for routing
 const demo = require("./routes/demo.js");
 app.use('/demo',demo);
-
-app.get('/home',(req,res)=>{
-    res.render('home');
-})
-
 
 app.listen(port, () => {
     console.log(`app listening on port ${port}`)
