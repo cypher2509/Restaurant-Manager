@@ -2,6 +2,17 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const router = express.Router();
+
+app.use(express.urlencoded({extended:true}));
+router.get('/', function (req, res, next) {
+    console.log("Router Working");
+    res.end();
+})
+
+
+const demo = require("./routes/demo.js");
+app.use('/demo',demo);
 
 //all http requests should respond in JSON objects and should follow a proper camel case convention.
 // all http requests will get data in form of JSON objects.
