@@ -1,0 +1,53 @@
+.Header{
+    background-color: wheat;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+}
+
+.logo{
+    margin: 0.5rem;
+    font-size: 28px;
+    font-family: "Koulen", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 30px;
+}
+.logo p{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.header-left{
+    display: flex;
+    width: 25%;
+    justify-content: space-around;
+}
+.date{
+    margin: 0.5rem;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.date p{
+    font-size: 18px;
+    font-weight: 4  00;
+}
+
+.user{
+    margin: 0.5;
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 20px;
+}
+
+.user p{
+    opacity: 60%;
+    font-size: 18px;
+}
+
+i{
+    font-size: 30px; 
+}
