@@ -1,6 +1,7 @@
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = 3000;
 const router = express.Router();
 var bodyParser = require('body-parser');
@@ -8,7 +9,7 @@ var bodyParser = require('body-parser');
 
 app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.json())
-
+app.use(cors());
 
 router.get('/', function (req, res, next) {
     console.log("Home");

@@ -1,0 +1,27 @@
+.table-map{
+    grid-column: 1/4;
+    grid-row: 1/7;
+    background: linear-gradient(#FF6500, #FFAE79);    
+    border-radius: 2em;
+    margin: 1em;
+
+}
+
+.table-map h1{
+    padding: 2% 3% 3% 10%;
+}
+
+.tables{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    width: fit-content;
+    height: fit-content;
+}
+
+.tables img{
+    width: 20%;
+    height: 18%;
+    padding: 1% 4.16% 4% 4.16%;
+}

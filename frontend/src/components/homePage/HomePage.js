@@ -1,8 +1,15 @@
 import React from "react";
+import Tables from "../tables/Tables.js"
+import "./homePage.css"
+import Order from "../orders/Order.js";
 
 function HomePage(){
     return(
-        <h1>Home</h1>
+        <div className="home">
+            <Tables/>
+            <Order/>
+        </div>
+        
     )
 }
 
