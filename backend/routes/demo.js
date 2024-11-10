@@ -6,7 +6,7 @@ router.get('/',async(req,res)=>{
 });
 
 router.get('/helloworld',(req,res)=>{
-    res.json({"msg": "helloworld"});
+    res.send('Hello world!');
 })
 
 module.exports= router;
