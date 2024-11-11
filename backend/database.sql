@@ -1,3 +1,4 @@
+-- Create the database and switch to it
 CREATE DATABASE IF NOT EXISTS restaurant_db;
 USE restaurant_db;
 
@@ -23,21 +24,22 @@ CREATE TABLE orders (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Order Items Table (for many-to-many relationship between orders and menu items)
+-- Order Items Table (many-to-many relationship between orders and menu items)
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT,
-    menu_item_id INT,
+    order_id INT NOT NULL,
+    menu_item_id INT NOT NULL,
     quantity INT NOT NULL,
     price_at_time DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
 );
 
 -- Employees Table
 CREATE TABLE employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
     role VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -55,4 +57,59 @@ CREATE TABLE reservations (
     party_size INT NOT NULL,
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Customers Table
+CREATE TABLE customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    contact_number VARCHAR(15),
+    email VARCHAR(100) UNIQUE,
+    loyalty_points INT DEFAULT 0
+);
+
+-- Inventory Items Table
+CREATE TABLE inventory_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    quantity INT DEFAULT 0,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+-- Restaurant Tables Table
+CREATE TABLE restaurant_tables (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    capacity INT NOT NULL,
+    location VARCHAR(50)
+);
+
+-- Shifts Table
+CREATE TABLE shifts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    shift_date DATE NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+);
+
+-- Uses Table (tracks usage of inventory items in orders)
+CREATE TABLE uses (
+    order_id INT NOT NULL,
+    item_id INT NOT NULL,
+    quantity_used INT NOT NULL,
+    PRIMARY KEY (order_id, item_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
+);
+
+-- Contains Table (tracks items contained within orders)
+CREATE TABLE contains (
+    order_id INT NOT NULL,
+    item_id INT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (order_id, item_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
 );
