@@ -23,6 +23,9 @@ const orderRoutes = require('./routes/orderRoutes');
 // const reservationRoutes = require('./routes/reservationRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
+const tableRoutes = require('./routes/tableRoutes');
+const customerRoutes = require('./routes/customerRoutes');
 
 const tables = [
     { id: 1, number: 1, isBooked: true },
