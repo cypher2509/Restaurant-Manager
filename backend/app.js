@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const cors = require('cors');
 
 // Import database configuration
 const db = require('./config/db');
@@ -8,6 +9,8 @@ const db = require('./config/db');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+
 
 // Basic route test
 app.get('/', (req, res) => {
@@ -17,10 +20,24 @@ app.get('/', (req, res) => {
 // Import routes - following RESTful naming conventions
 const menuRoutes = require('./routes/menuRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-const reservationRoutes = require('./routes/reservationRoutes');
+// const reservationRoutes = require('./routes/reservationRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 
+const tables = [
+    { id: 1, number: 1, isBooked: true },
+    { id: 2, number: 2, isBooked: false },
+    { id: 3, number: 3, isBooked: false },
+    { id: 4, number: 4, isBooked: true },
+    { id: 5, number: 5, isBooked: true },
+    { id: 6, number: 6, isBooked: false },
+    // Add more tables as needed
+];
+
+// Route to get all tables
+app.get('/tables', (req, res) => {
+    res.json(tables);
+});
 /**
  * Menu Routes
  * GET /api/menu - Get all menu items
@@ -46,7 +63,7 @@ app.use('/api/orders', orderRoutes);
  * PUT /api/reservations/:id - Update reservation
  * DELETE /api/reservations/:id - Cancel reservation
  */
-app.use('/api/reservations', reservationRoutes);
+// app.use('/api/reservations', reservationRoutes);
 
 /**
  * Employee Routes
