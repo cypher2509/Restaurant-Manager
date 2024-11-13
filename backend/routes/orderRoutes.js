@@ -7,14 +7,13 @@ const db = require('../config/db');
  * @route GET /api/orders
  * @description Get all orders
  */
-router.get('/', (req, res) => {
-    const query = 'SELECT * FROM Orders';
-    db.query(query, (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
+router.get('/', async (req, res, next) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM orders'); // Use await instead of a callback
+        res.json(rows); // Send the data as JSON
+    } catch (err) {
+        next(err); // Pass errors to the error-handling middleware
+    }
 });
 
 /**

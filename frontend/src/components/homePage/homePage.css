@@ -3,6 +3,7 @@
     padding: 0;
     border-radius: 2em;
 }
+
 .home{
     display: grid;
     grid-template-columns:repeat(9,11.11vw);
