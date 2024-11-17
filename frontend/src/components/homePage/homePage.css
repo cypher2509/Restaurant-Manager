@@ -7,7 +7,16 @@
 .home{
     display: grid;
     grid-template-columns:repeat(9,11.11vw);
-    grid-template-rows: repeat(9,10vh);
+    grid-template-rows: repeat(9,10.4vh);
     background-color: #F8F4F4;
+}
 
+.btn{
+    border: none !important;
+}
+
+.img{
+    width: 95%;
+    height: 80%;
+    margin: 2.5%;
 }

@@ -5,6 +5,10 @@
     justify-content: space-between;   
 }
 
+.Header p{
+    margin: 0px ;
+}
+
 .logo{
     margin: 0.5rem;
     font-size: 28px;

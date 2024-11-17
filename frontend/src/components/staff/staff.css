@@ -1,0 +1,6 @@
+.staff-container{
+    grid-column: 4/6;
+    grid-row: 7/10;
+    margin: 1em;
+    background-color: white;
+}

@@ -1,0 +1,6 @@
+.menu-container{
+    grid-column: 6/8;
+    grid-row: 7/10;
+    margin: 1em;
+    background-color: white;
+}

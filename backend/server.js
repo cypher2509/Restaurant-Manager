@@ -87,6 +87,36 @@ app.get('/orders/priority', (req,res) => {
 
 app.use('/orders', orderRoutes);
 
+const scheduledReservations = [
+    { id: 1, name: 'Reservation A', time: '10:00 AM' },
+    { id: 2, name: 'Reservation B', time: '12:00 PM' },
+    { id: 3, name: 'Reservation C', time: '2:00 PM' }
+];
+
+const completedReservations = [
+    { id: 1, name: 'Reservation D', time: '9:00 AM' },
+    { id: 2, name: 'Reservation E', time: '11:00 AM' }
+];
+
+const availableReservations = [
+    { id: 1, name: 'Reservation F', time: '3:00 PM' },
+    { id: 2, name: 'Reservation G', time: '4:00 PM' },
+    { id: 3, name: 'Reservation H', time: '5:00 PM' },
+    { id: 4, name: 'Reservation I', time: '6:00 PM' }
+];
+
+// Endpoints
+app.get('/reservations/scheduled', (req, res) => {
+    res.json(scheduledReservations);
+});
+
+app.get('/reservations/completed', (req, res) => {
+    res.json(completedReservations);
+});
+
+app.get('/reservations/available', (req, res) => {
+    res.json(availableReservations);
+});
 
 /**
  * Reservation Routes

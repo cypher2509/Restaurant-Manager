@@ -1,0 +1,6 @@
+.inventory-container{
+    grid-column: 8/10;
+    grid-row: 7/10;
+    margin: 1em;
+    background-color: white;
+}
