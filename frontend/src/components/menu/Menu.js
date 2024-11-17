@@ -6,7 +6,7 @@ import './menu.css';
 function Menu(){
     return(
         <div className="menu-container">
-            < img className='menu-img img' src="menu.jpg" alt="" />
+            <img className='menu-img img' src="menu.jpg" alt="" />
             <div className="text menu-text">
                 Menu <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
             </div>

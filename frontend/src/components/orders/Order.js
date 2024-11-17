@@ -58,7 +58,7 @@ function Order(){
             <div className="order-table">
                 <div className="table-header">
                     <h1>orders</h1> 
-                    <form action="/order" method="get">
+                    <form action="/order/new" method="get">
                         <button className='btn-add'><i class="fa-regular fa-plus"></i></button>
                     </form>
                 

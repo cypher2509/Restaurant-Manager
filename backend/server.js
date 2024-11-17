@@ -118,6 +118,57 @@ app.get('/reservations/available', (req, res) => {
     res.json(availableReservations);
 });
 
+const menuItems =[
+    {
+      id: 1,
+      name: "Cheeseburger",
+      description: "A juicy burger with cheese, lettuce, and tomato.",
+      img: "https://plus.unsplash.com/premium_photo-1683619761468-b06992704398?q=80&w=1265&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 8.99
+    },
+    {
+      id: 2,
+      name: "Margherita Pizza",
+      description: "Classic Italian pizza with fresh mozzarella and basil.",
+      img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1081&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 12.49
+    },
+    {
+      id: 3,
+      name: "Caesar Salad",
+      description: "Crisp romaine lettuce with Caesar dressing and croutons.",
+      img: "https://plus.unsplash.com/premium_photo-1700089483464-4f76cc3d360b?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 7.99
+    },
+    {
+      id: 4,
+      name: "Grilled Chicken",
+      description: "Perfectly grilled chicken breast with a smoky flavor.",
+      img: "https://plus.unsplash.com/premium_photo-1661419883163-bb4df1c10109?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 10.99
+    },
+    {
+      id: 5,
+      name: "Chocolate Cake",
+      description: "Rich and moist chocolate cake topped with ganache.",
+      img: "https://plus.unsplash.com/premium_photo-1715015440855-7d95cf92608a?q=80&w=1288&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 5.99
+    },
+    {
+      id: 6,
+      name: "Tacos",
+      description: "Soft-shell tacos filled with seasoned beef, lettuce, and cheese.",
+      img: "https://images.unsplash.com/photo-1604467715878-83e57e8bc129?q=80&w=1288&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      price: 9.49
+    }
+  ];
+  
+  // API endpoint to get menu items
+  app.get('/menu', (req, res) => {
+    res.json(menuItems);
+  });
+  
+
 /**
  * Reservation Routes
  * GET /api/reservations - Get all reservations
