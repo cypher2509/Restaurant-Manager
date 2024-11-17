@@ -1,7 +1,9 @@
 .inventory-container{
     grid-column: 8/10;
     grid-row: 7/10;
-    margin: 1em;
+    margin: 0.5em;
     background-color: white;
     font-size: 24px;
+    box-shadow: 1px 1px 3px black;
+
 }
