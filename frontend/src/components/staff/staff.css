@@ -3,4 +3,11 @@
     grid-row: 7/10;
     margin: 1em;
     background-color: white;
+    font-size: 24px;
+}
+
+.text{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 30px 0 30px;
 }

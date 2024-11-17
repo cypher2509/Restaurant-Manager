@@ -7,7 +7,7 @@ function Inventory(){
     return(
         <div className="inventory-container">
             < img className='inventory-img img' src="inventory.jpg" alt="" />
-            <div className="inventory-text">
+            <div className="text inventory-text">
                 Inventory Management <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
             </div>
         </div>

@@ -39,6 +39,7 @@ function Reservation(){
 
     return(
         <div className="reservation-container">
+            <div className="reservation-btn-container">
                 <form className='btn-reservation btn-add-res'action="" method="get">
                         <button className='btn'><i class="fa-regular fa-plus"></i></button>
                 </form>
@@ -48,6 +49,8 @@ function Reservation(){
                 <form className='btn-reservation btn-enter' action="" method="get">
                     <button className='btn'><img src="door.png" alt="" /></button>
                 </form>
+            </div>
+               
 
 
             <div className="reservations scheduled-reservations">    
@@ -55,8 +58,8 @@ function Reservation(){
                     <p>scheduled <br/> reservations</p>
                     <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
                 </div>
-                <div className="scheduled-reservations">
-                    <p>{scheduled_reservations_count}</p>
+                <div>
+                    <p className='count'>{scheduled_reservations_count}</p>
                 </div>
             </div>
 
@@ -65,18 +68,15 @@ function Reservation(){
                     <p>completed<br/> reservations</p>
                     <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
                 </div>
-                <div className="completed-reservations">
-                    <p>{completed_reservations_count}</p>
+                <div>
+                    <p className='count'>{completed_reservations_count}</p>
                 </div>
             </div>
 
             <div className="reservations available-reservations">
                 <div className="available-reservations-heading reservations-heading">
-                    <p>available reservations</p>
+                    <p>available reservations <span className='count'>{available_reservations_count}</span></p>
                     <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
-                </div>
-                <div className="available-reservations">
-                    <p>{available_reservations_count}</p>
                 </div>
             </div>
         </div>
