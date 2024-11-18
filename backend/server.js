@@ -4,15 +4,55 @@ const port = 3000;
 const cors = require('cors');
 
 // Import database configuration
-const db = require('./config/db');
+const { initializeDatabase } = require('./config/db');
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
-//server
-
+/// Try ports 3000, 3001, 3002, etc. until we find an available one
+async function findAvailablePort(startPort) {
+    for (let port = startPort; port < startPort + 10; port++) {
+      try {
+        await new Promise((resolve, reject) => {
+          const server = app.listen(port)
+            .once('listening', () => {
+              server.close();
+              resolve();
+            })
+            .once('error', reject);
+        });
+        return port;
+      } catch (err) {
+        if (err.code !== 'EADDRINUSE') throw err;
+      }
+    }
+    throw new Error('No available ports found');
+  }
+  
+  // Initialize database and start server
+  async function startServer() {
+    try {
+      // Initialize database
+      const pool = await initializeDatabase();
+      
+      // Make the pool available throughout the app
+      app.locals.db = pool;
+      
+      // Find available port
+      const port = await findAvailablePort(3000);
+      
+      // Start server
+      app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+        console.log(`http://localhost:${port}`);
+      });
+    } catch (error) {
+      console.error('Failed to start server:', error);
+      process.exit(1);
+    }
+  }
 // Basic route test
 app.get('/', (req, res) => {
     res.json({ message: 'Restaurant Management System API' });
@@ -212,5 +252,9 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`http://localhost:${port}`);
 });
+
+
+// Start the server
+startServer();
 
 module.exports = app;
