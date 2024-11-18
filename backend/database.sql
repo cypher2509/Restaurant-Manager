@@ -56,3 +56,11 @@ CREATE TABLE reservations (
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Customers Table
+CREATE TABLE customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_name VARCHAR(100) NOT NULL,
+    customer_phone VARHCHAR(10),
+    customer_email VARCHAR(100),
+);

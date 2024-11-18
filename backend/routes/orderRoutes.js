@@ -31,19 +31,53 @@ router.get('/pending', async (req, res) => {
 
 /**
  * @route GET /api/orders/:id
- * @description Get a specific order by ID
+ * @description Get a specific order by ID, including customer name and ordered items
  */
 router.get('/:id', async (req, res) => {
     try {
-        const [rows] = await db.promise().query('SELECT * FROM Orders WHERE Order_ID = ?', [req.params.id]);
-        if (rows.length === 0) {
+        // Query to get order details and join with customer table
+        const [orderRows] = await db.promise().query(`
+            SELECT 
+                o.Order_ID AS id,
+                c.Customer_Name AS customer_name,
+                o.Employee_ID AS employee_id,
+                o.Table_No AS table_number,
+                o.Order_Total AS total_amount,
+                o.Order_Date AS date,
+                o.Status AS status
+            FROM Orders o
+            JOIN Customers c ON o.Customer_ID = c.Customer_ID
+            WHERE o.Order_ID = ?
+        `, [req.params.id]);
+
+        if (orderRows.length === 0) {
             return res.status(404).json({ message: 'Order not found' });
         }
-        res.json(rows[0]);
+
+        // Query to get ordered items for the given order
+        const [itemsRows] = await db.promise().query(`
+            SELECT 
+                oi.Item_ID AS id,
+                m.Name AS name,
+                oi.Quantity AS quantity,
+                oi.Price AS price
+            FROM Order_Items oi
+            JOIN Menu m ON oi.Item_ID = m.Menu_ID
+            WHERE oi.Order_ID = ?
+        `, [req.params.id]);
+
+        // Combine order details with items
+        const orderDetails = {
+            ...orderRows[0],
+            items: itemsRows
+        };
+
+        res.json(orderDetails);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 /**
  * @route POST /api/orders
