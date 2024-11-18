@@ -38,6 +38,7 @@ router.get('/:id', (req, res) => {
  * @description Create a new order
  */
 router.post('/', (req, res) => {
+    console.log(req.body);
     const { customer_id, items, total_amount, status } = req.body;
     const query = 'INSERT INTO Orders (Customer_ID, Order_Items, Total_Amount, Status) VALUES (?, ?, ?, ?)';
     db.query(query, [customer_id, JSON.stringify(items), total_amount, status || 'pending'], (err, results) => {

@@ -67,6 +67,125 @@ const orderDetails = [
     { id: 10, table_number: 10, status: 'completed', total_amount: 100.00 },
 ];
 
+// const orderDetails=[
+//     {
+//       "order_id": 1,
+//       "customer_name": "John Doe",
+//       "employee_id": "E123",
+//       "table_number": "5",
+//       "total_amount": 120.75,
+//       "order_date": "2024-11-17T14:45:30.000Z",
+//       "order_status": "pending",
+//       "order_items": [
+//         {
+//           "id": 1,
+//           "name": "Cheeseburger",
+//           "quantity": 2,
+//           "price": 8.99
+//         },
+//         {
+//           "id": 2,
+//           "name": "Margherita Pizza",
+//           "quantity": 1,
+//           "price": 12.49
+//         }
+//       ]
+//     },
+//     {
+//       "order_id": 2,
+//       "customer_name": "Jane Smith",
+//       "employee_id": "E456",
+//       "table_number": "3",
+//       "total_amount": 75.50,
+//       "order_date": "2024-11-16T13:30:00.000Z",
+//       "order_status": "completed",
+//       "order_items": [
+//         {
+//           "id": 3,
+//           "name": "Caesar Salad",
+//           "quantity": 3,
+//           "price": 7.99
+//         },
+//         {
+//           "id": 4,
+//           "name": "Grilled Chicken",
+//           "quantity": 1,
+//           "price": 10.99
+//         }
+//       ]
+//     },
+//     {
+//       "order_id": 3,
+//       "customer_name": "Alice Johnson",
+//       "employee_id": "E789",
+//       "table_number": "8",
+//       "total_amount": 92.99,
+//       "order_date": "2024-11-17T17:15:00.000Z",
+//       "order_status": "priority",
+//       "order_items": [
+//         {
+//           "id": 5,
+//           "name": "Chocolate Cake",
+//           "quantity": 4,
+//           "price": 5.99
+//         },
+//         {
+//           "id": 6,
+//           "name": "Tacos",
+//           "quantity": 2,
+//           "price": 9.49
+//         }
+//       ]
+//     },
+//     {
+//       "order_id": 4,
+//       "customer_name": "Mark Brown",
+//       "employee_id": "E234",
+//       "table_number": "2",
+//       "total_amount": 45.97,
+//       "order_date": "2024-11-17T12:00:00.000Z",
+//       "order_status": "pending",
+//       "order_items": [
+//         {
+//           "id": 7,
+//           "name": "Grilled Cheese Sandwich",
+//           "quantity": 3,
+//           "price": 5.99
+//         }
+//       ]
+//     },
+//     {
+//       "order_id": 5,
+//       "customer_name": "Emily Davis",
+//       "employee_id": "E345",
+//       "table_number": "10",
+//       "total_amount": 150.25,
+//       "order_date": "2024-11-17T18:45:00.000Z",
+//       "order_status": "completed",
+//       "order_items": [
+//         {
+//           "id": 8,
+//           "name": "BBQ Ribs",
+//           "quantity": 2,
+//           "price": 20.49
+//         },
+//         {
+//           "id": 9,
+//           "name": "Steak",
+//           "quantity": 1,
+//           "price": 35.99
+//         },
+//         {
+//           "id": 10,
+//           "name": "Fries",
+//           "quantity": 3,
+//           "price": 4.99
+//         }
+//       ]
+//     }
+//   ]
+  
+
 // Endpoint to get all pending orders
 app.get('/orders/pending', (req, res) => {
     const pendingOrders = orderDetails.filter(order => order.status === 'pending');
