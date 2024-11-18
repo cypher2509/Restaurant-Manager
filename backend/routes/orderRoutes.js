@@ -31,7 +31,7 @@ router.get('/pending', async (req, res) => {
 
 /**
  * @route GET /api/orders/:id
- * @description Get a specific order
+ * @description Get a specific order by ID
  */
 router.get('/:id', async (req, res) => {
     try {
@@ -51,7 +51,6 @@ router.get('/:id', async (req, res) => {
  */
 router.post('/', async (req, res) => {
     const { customerName, tableNo, orderTotal, orderDate, orderedItems } = req.body;
-
     try {
         // Validate ordered items
         for (const item of orderedItems) {
@@ -61,13 +60,13 @@ router.post('/', async (req, res) => {
             }
         }
 
-        // Insert the order
+        // Insert the order into the Orders table
         const [orderResult] = await db.promise().query(
             'INSERT INTO Orders (Customer_Name, Table_No, Order_Total, Order_Date, Ordered_Items) VALUES (?, ?, ?, ?, ?)',
             [customerName, tableNo, orderTotal, orderDate, JSON.stringify(orderedItems)]
         );
 
-        // Update the inventory quantities
+        // Update the inventory quantities in the Menu table
         for (const item of orderedItems) {
             await db.promise().query(
                 'UPDATE Menu SET Quantity = Quantity - ? WHERE Menu_ID = ?',
@@ -94,7 +93,7 @@ router.post('/', async (req, res) => {
 
 /**
  * @route PUT /api/orders/:id
- * @description Update an order status
+ * @description Update the status of an order (e.g., from pending to completed)
  */
 router.put('/:id', async (req, res) => {
     const { status } = req.body;
@@ -103,7 +102,7 @@ router.put('/:id', async (req, res) => {
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Order not found' });
         }
-        res.json({ message: 'Order updated' });
+        res.json({ message: 'Order status updated' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -111,7 +110,7 @@ router.put('/:id', async (req, res) => {
 
 /**
  * @route DELETE /api/orders/:id
- * @description Cancel an order
+ * @description Cancel an order by setting its status to "cancelled"
  */
 router.delete('/:id', async (req, res) => {
     try {

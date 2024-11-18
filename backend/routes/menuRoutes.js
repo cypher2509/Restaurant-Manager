@@ -1,4 +1,3 @@
-// routes/menuRoutes.js
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
@@ -37,11 +36,11 @@ router.get('/:id', async (req, res) => {
  * @description Add a new menu item
  */
 router.post('/', async (req, res) => {
-    const { name, description, price, category, quantity } = req.body;
+    const { name, description, price, category, quantity, img } = req.body;
     try {
         const [result] = await db.promise().query(
-            'INSERT INTO Menu (Name, Description, Price, Category, Quantity) VALUES (?, ?, ?, ?, ?)',
-            [name, description, price, category, quantity]
+            'INSERT INTO Menu (Name, Description, Price, Category, Quantity, Image_URL) VALUES (?, ?, ?, ?, ?, ?)',
+            [name, description, price, category, quantity, img]
         );
         res.status(201).json({ message: 'Menu item added', id: result.insertId });
     } catch (err) {
@@ -54,11 +53,11 @@ router.post('/', async (req, res) => {
  * @description Update a menu item
  */
 router.put('/:id', async (req, res) => {
-    const { name, description, price, category, quantity } = req.body;
+    const { name, description, price, category, quantity, img } = req.body;
     try {
         const [result] = await db.promise().query(
-            'UPDATE Menu SET Name = ?, Description = ?, Price = ?, Category = ?, Quantity = ? WHERE Menu_ID = ?',
-            [name, description, price, category, quantity, req.params.id]
+            'UPDATE Menu SET Name = ?, Description = ?, Price = ?, Category = ?, Quantity = ?, Image_URL = ? WHERE Menu_ID = ?',
+            [name, description, price, category, quantity, img, req.params.id]
         );
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Menu item not found' });
