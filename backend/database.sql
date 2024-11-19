@@ -61,6 +61,6 @@ CREATE TABLE reservations (
 CREATE TABLE customers (
     id INT PRIMARY KEY AUTO_INCREMENT,
     customer_name VARCHAR(100) NOT NULL,
-    customer_phone VARHCHAR(10),
-    customer_email VARCHAR(100),
+    customer_phone VARCHAR(100),
+    customer_email VARCHAR(100)
 );

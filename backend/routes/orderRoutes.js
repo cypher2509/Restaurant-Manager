@@ -9,7 +9,7 @@ const db = require('../config/db');
  */
 router.get('/completed', async (req, res) => {
     try {
-        const [rows] = await db.promise().query('SELECT * FROM Orders WHERE Status = "completed"');
+        const [rows] = await db.promise().query('SELECT * FROM orders WHERE status = "completed"');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -22,7 +22,7 @@ router.get('/completed', async (req, res) => {
  */
 router.get('/pending', async (req, res) => {
     try {
-        const [rows] = await db.promise().query('SELECT * FROM Orders WHERE Status = "pending"');
+        const [rows] = await db.promise().query('SELECT * FROM orders WHERE status = "pending"');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -35,19 +35,18 @@ router.get('/pending', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     try {
-        // Query to get order details and join with customer table
+        // Query to get order details and join with customers table
         const [orderRows] = await db.promise().query(`
             SELECT 
-                o.Order_ID AS id,
-                c.Customer_Name AS customer_name,
-                o.Employee_ID AS employee_id,
-                o.Table_No AS table_number,
-                o.Order_Total AS total_amount,
-                o.Order_Date AS date,
-                o.Status AS status
-            FROM Orders o
-            JOIN Customers c ON o.Customer_ID = c.Customer_ID
-            WHERE o.Order_ID = ?
+                o.id AS id,
+                c.customer_name AS customer_name,
+                o.table_number AS table_number,
+                o.total_amount AS total_amount,
+                o.created_at AS date,
+                o.status AS status
+            FROM orders o
+            JOIN customers c ON o.id = c.id
+            WHERE o.id = ?
         `, [req.params.id]);
 
         if (orderRows.length === 0) {
@@ -57,13 +56,13 @@ router.get('/:id', async (req, res) => {
         // Query to get ordered items for the given order
         const [itemsRows] = await db.promise().query(`
             SELECT 
-                oi.Item_ID AS id,
-                m.Name AS name,
-                oi.Quantity AS quantity,
-                oi.Price AS price
-            FROM Order_Items oi
-            JOIN Menu m ON oi.Item_ID = m.Menu_ID
-            WHERE oi.Order_ID = ?
+                oi.id AS id,
+                m.name AS name,
+                oi.quantity AS quantity,
+                oi.price_at_time AS price
+            FROM order_items oi
+            JOIN menu_items m ON oi.menu_item_id = m.id
+            WHERE oi.order_id = ?
         `, [req.params.id]);
 
         // Combine order details with items
@@ -78,7 +77,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-
 /**
  * @route POST /api/orders
  * @description Create a new order
@@ -88,22 +86,30 @@ router.post('/', async (req, res) => {
     try {
         // Validate ordered items
         for (const item of orderedItems) {
-            const [menuItemResult] = await db.promise().query('SELECT Quantity FROM Menu WHERE Menu_ID = ?', [item.id]);
-            if (menuItemResult.length === 0 || menuItemResult[0].Quantity < item.quantity) {
+            const [menuItemResult] = await db.promise().query('SELECT is_available, quantity FROM menu_items WHERE id = ?', [item.id]);
+            if (menuItemResult.length === 0 || menuItemResult[0].quantity < item.quantity) {
                 return res.status(400).json({ message: `Menu item ${item.id} is not available in the requested quantity` });
             }
         }
 
         // Insert the order into the Orders table
         const [orderResult] = await db.promise().query(
-            'INSERT INTO Orders (Customer_Name, Table_No, Order_Total, Order_Date, Ordered_Items) VALUES (?, ?, ?, ?, ?)',
-            [customerName, tableNo, orderTotal, orderDate, JSON.stringify(orderedItems)]
+            'INSERT INTO orders (table_number, total_amount, created_at, status) VALUES (?, ?, ?, ?)',
+            [tableNo, orderTotal, orderDate, 'pending']
         );
+
+        // Insert the ordered items into the Order_Items table
+        for (const item of orderedItems) {
+            await db.promise().query(
+                'INSERT INTO order_items (order_id, menu_item_id, quantity, price_at_time) VALUES (?, ?, ?, ?)',
+                [orderResult.insertId, item.id, item.quantity, item.price]
+            );
+        }
 
         // Update the inventory quantities in the Menu table
         for (const item of orderedItems) {
             await db.promise().query(
-                'UPDATE Menu SET Quantity = Quantity - ? WHERE Menu_ID = ?',
+                'UPDATE menu_items SET quantity = quantity - ? WHERE id = ?',
                 [item.quantity, item.id]
             );
         }
@@ -132,7 +138,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const { status } = req.body;
     try {
-        const [result] = await db.promise().query('UPDATE Orders SET Status = ? WHERE Order_ID = ?', [status, req.params.id]);
+        const [result] = await db.promise().query('UPDATE orders SET status = ? WHERE id = ?', [status, req.params.id]);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Order not found' });
         }
@@ -148,7 +154,7 @@ router.put('/:id', async (req, res) => {
  */
 router.delete('/:id', async (req, res) => {
     try {
-        const [result] = await db.promise().query('UPDATE Orders SET Status = "cancelled" WHERE Order_ID = ?', [req.params.id]);
+        const [result] = await db.promise().query('UPDATE orders SET status = "cancelled" WHERE id = ?', [req.params.id]);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Order not found' });
         }

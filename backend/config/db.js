@@ -71,7 +71,14 @@ async function initializeDatabase() {
         party_size INT NOT NULL,
         status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );`;
+    );
+    
+    CREATE TABLE IF NOT EXISTS customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_name VARCHAR(100) NOT NULL,
+    customer_phone VARCHAR(100),
+    customer_email VARCHAR(100)
+);`;
     
     // Execute table creation
     await connection.query(createTables);
