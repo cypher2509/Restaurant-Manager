@@ -113,3 +113,58 @@ CREATE TABLE contains (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
 );
+
+--Stored Procedure to get daily sales for the date 
+DELIMITER //
+
+CREATE PROCEDURE GetDailySales(IN sales_date DATE)
+BEGIN
+    SELECT 
+        DATE(created_at) AS SaleDate, 
+        COUNT(id) AS TotalOrders, 
+        SUM(total_amount) AS TotalSales
+    FROM 
+        orders
+    WHERE 
+        DATE(created_at) = sales_date
+    GROUP BY 
+        SaleDate;
+END //
+
+DELIMITER ;
+
+-- SQL Function to Check Table Availabilty 
+DELIMITER //
+
+CREATE FUNCTION CheckTableAvailability(reservation_date DATE, reservation_time TIME, party_size INT)
+RETURNS BOOLEAN
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE available_capacity INT;
+
+    -- Calculate total capacity of unreserved tables
+    SELECT 
+        SUM(capacity)
+    INTO 
+        available_capacity
+    FROM 
+        restaurant_tables
+    WHERE 
+        id NOT IN (
+            SELECT DISTINCT table_id
+            FROM reservations
+            WHERE date = reservation_date 
+            AND time = reservation_time
+            AND status = 'confirmed'
+        );
+
+    -- Return TRUE if enough capacity is available
+    IF available_capacity > party_size THEN 
+		return TRUE; 
+	else
+		return False; 
+	end if; 
+END //
+
+DELIMITER ;
