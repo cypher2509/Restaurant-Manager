@@ -59,7 +59,7 @@ function Order(){
                 <div className="table-header">
                     <h1>orders</h1> 
                     <form action="/order/new" method="get">
-                        <button className='btn-add'><i class="fa-regular fa-plus"></i></button>
+                        <button className='btn-add'><i class="fa-solid fa-plus"></i></button>
                     </form>
                 
                 </div>
@@ -73,7 +73,7 @@ function Order(){
                     <tbody>
                     {priority_orders.map(order =>(
                         <tr>
-                            <td >{order.id}</td>
+                            <td><a style={{textDecoration:"none"}} href={`/order/${order.id}`}>{order.id} <i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a></td>
                             <td >{order.table_number}</td>
                             <td className='priority-orders-list'>{order.status}</td>
                             <td >{order.total_amount}</ td>
@@ -81,7 +81,7 @@ function Order(){
                     ))}
                      {pending_orders.map(order =>(
                         <tr >
-                            <td >{order.id}</td>
+                            <td><a style={{textDecoration:"none"}} href={`/order/${order.id}`}>{order.id} <i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i> </a></td>
                             <td >{order.table_number}</td>
                             <td  className='pending-orders-list'>{order.status}</td>
                             <td >{order.total_amount}</td>
@@ -89,7 +89,7 @@ function Order(){
                     ))}
                      {completed_orders.map(order =>(
                         <tr >
-                            <td >{order.id}</td>
+                            <td><a style={{textDecoration:"none"}} href={`/order/${order.id}`}>{order.id} <i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a></td>
                             <td >{order.table_number}</td>
                             <td className='completed-orders-list'>{order.status}</td>
                             <td >{order.total_amount}</td>

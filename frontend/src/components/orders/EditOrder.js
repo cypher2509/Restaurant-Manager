@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
-import "./newOrder.css";
+import "./editOrder.css";
 
-
-
-function NewOrder(){
+function EditOrder(){
     const [menuItems, setMenuItems] = useState([]);
     const [orderedItems, setOrderedItems] = useState([]);
     const [orderTotal, setOrderTotal] = useState(0);
@@ -191,4 +189,4 @@ function NewOrder(){
     )
 }
 
-export default NewOrder;
+export default EditOrder;

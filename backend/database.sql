@@ -8,7 +8,6 @@ CREATE TABLE menu_items (
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
     category VARCHAR(50) NOT NULL,
-    is_available BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -56,3 +55,11 @@ CREATE TABLE reservations (
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE inventory_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,        
+    name VARCHAR(255) NOT NULL,               
+    quantity INT NOT NULL DEFAULT 0,          
+    restock_threshold INT NOT NULL DEFAULT 30
+);
+

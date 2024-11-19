@@ -55,136 +55,122 @@ app.use('/api/menu', menuRoutes);
  * DELETE /api/orders/:id - Cancel order
  */
 const orderDetails = [
-    { id: 1, table_number: 1, status: 'pending', total_amount: 45.50 },
-    { id: 2, table_number: 2, status: 'completed', total_amount: 30.00 },
-    { id: 3, table_number: 3, status: 'completed', total_amount: 25.75 },
-    { id: 4, table_number: 4, status: 'pending', total_amount: 60.20 },
-    { id: 5, table_number: 5, status: 'completed', total_amount: 42.00 },
-    { id: 6, table_number: 6, status: 'completed', total_amount: 55.10 },
-    { id: 7, table_number: 7, status: 'pending', total_amount: 39.99 },
-    { id: 8, table_number: 8, status: 'completed', total_amount: 28.50 },
-    { id: 9, table_number: 9, status: 'priority', total_amount: 75.00 },
-    { id: 10, table_number: 10, status: 'completed', total_amount: 100.00 },
-];
-
-// const orderDetails=[
-//     {
-//       "order_id": 1,
-//       "customer_name": "John Doe",
-//       "employee_id": "E123",
-//       "table_number": "5",
-//       "total_amount": 120.75,
-//       "order_date": "2024-11-17T14:45:30.000Z",
-//       "order_status": "pending",
-//       "order_items": [
-//         {
-//           "id": 1,
-//           "name": "Cheeseburger",
-//           "quantity": 2,
-//           "price": 8.99
-//         },
-//         {
-//           "id": 2,
-//           "name": "Margherita Pizza",
-//           "quantity": 1,
-//           "price": 12.49
-//         }
-//       ]
-//     },
-//     {
-//       "order_id": 2,
-//       "customer_name": "Jane Smith",
-//       "employee_id": "E456",
-//       "table_number": "3",
-//       "total_amount": 75.50,
-//       "order_date": "2024-11-16T13:30:00.000Z",
-//       "order_status": "completed",
-//       "order_items": [
-//         {
-//           "id": 3,
-//           "name": "Caesar Salad",
-//           "quantity": 3,
-//           "price": 7.99
-//         },
-//         {
-//           "id": 4,
-//           "name": "Grilled Chicken",
-//           "quantity": 1,
-//           "price": 10.99
-//         }
-//       ]
-//     },
-//     {
-//       "order_id": 3,
-//       "customer_name": "Alice Johnson",
-//       "employee_id": "E789",
-//       "table_number": "8",
-//       "total_amount": 92.99,
-//       "order_date": "2024-11-17T17:15:00.000Z",
-//       "order_status": "priority",
-//       "order_items": [
-//         {
-//           "id": 5,
-//           "name": "Chocolate Cake",
-//           "quantity": 4,
-//           "price": 5.99
-//         },
-//         {
-//           "id": 6,
-//           "name": "Tacos",
-//           "quantity": 2,
-//           "price": 9.49
-//         }
-//       ]
-//     },
-//     {
-//       "order_id": 4,
-//       "customer_name": "Mark Brown",
-//       "employee_id": "E234",
-//       "table_number": "2",
-//       "total_amount": 45.97,
-//       "order_date": "2024-11-17T12:00:00.000Z",
-//       "order_status": "pending",
-//       "order_items": [
-//         {
-//           "id": 7,
-//           "name": "Grilled Cheese Sandwich",
-//           "quantity": 3,
-//           "price": 5.99
-//         }
-//       ]
-//     },
-//     {
-//       "order_id": 5,
-//       "customer_name": "Emily Davis",
-//       "employee_id": "E345",
-//       "table_number": "10",
-//       "total_amount": 150.25,
-//       "order_date": "2024-11-17T18:45:00.000Z",
-//       "order_status": "completed",
-//       "order_items": [
-//         {
-//           "id": 8,
-//           "name": "BBQ Ribs",
-//           "quantity": 2,
-//           "price": 20.49
-//         },
-//         {
-//           "id": 9,
-//           "name": "Steak",
-//           "quantity": 1,
-//           "price": 35.99
-//         },
-//         {
-//           "id": 10,
-//           "name": "Fries",
-//           "quantity": 3,
-//           "price": 4.99
-//         }
-//       ]
-//     }
-//   ]
-  
+    {
+      "id": 1,
+      "customer_name": "John Doe",
+      "employee_id": "E123",
+      "table_number": "5",
+      "total_amount": 120.75,
+      "date": "2024-11-17T14:45:30.000Z",
+      "status": "pending",
+      "items": [
+        {
+          "id": 1,
+          "name": "Cheeseburger",
+          "quantity": 2,
+          "price": 8.99
+        },
+        {
+          "id": 2,
+          "name": "Margherita Pizza",
+          "quantity": 1,
+          "price": 12.49
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "customer_name": "Jane Smith",
+      "employee_id": "E456",
+      "table_number": "3",
+      "total_amount": 75.50,
+      "date": "2024-11-16T13:30:00.000Z",
+      "status": "completed",
+      "items": [
+        {
+          "id": 3,
+          "name": "Caesar Salad",
+          "quantity": 3,
+          "price": 7.99
+        },
+        {
+          "id": 4,
+          "name": "Grilled Chicken",
+          "quantity": 1,
+          "price": 10.99
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "customer_name": "Alice Johnson",
+      "employee_id": "E789",
+      "table_number": "8",
+      "total_amount": 92.99,
+      "date": "2024-11-17T17:15:00.000Z",
+      "status": "priority",
+      "items": [
+        {
+          "id": 5,
+          "name": "Chocolate Cake",
+          "quantity": 4,
+          "price": 5.99
+        },
+        {
+          "id": 6,
+          "name": "Tacos",
+          "quantity": 2,
+          "price": 9.49
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "customer_name": "Mark Brown",
+      "employee_id": "E234",
+      "table_number": "2",
+      "total_amount": 45.97,
+      "date": "2024-11-17T12:00:00.000Z",
+      "status": "pending",
+      "items": [
+        {
+          "id": 7,
+          "name": "Grilled Cheese Sandwich",
+          "quantity": 3,
+          "price": 5.99
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "customer_name": "Emily Davis",
+      "employee_id": "E345",
+      "table_number": "10",
+      "total_amount": 150.25,
+      "date": "2024-11-17T18:45:00.000Z",
+      "status": "completed",
+      "items": [
+        {
+          "id": 8,
+          "name": "BBQ Ribs",
+          "quantity": 2,
+          "price": 20.49
+        },
+        {
+          "id": 9,
+          "name": "Steak",
+          "quantity": 1,
+          "price": 35.99
+        },
+        {
+          "id": 10,
+          "name": "Fries",
+          "quantity": 3,
+          "price": 4.99
+        }
+      ]
+    }
+  ]
 
 // Endpoint to get all pending orders
 app.get('/orders/pending', (req, res) => {
