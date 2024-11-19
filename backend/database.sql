@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS restaurant_db;
 USE restaurant_db;
 
 -- Menu Items Table
-CREATE TABLE menu_items (
+CREATE TABLE IF NOT EXISTS menu_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -15,7 +15,7 @@ CREATE TABLE menu_items (
 );
 
 -- Orders Table
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
     table_number INT,
     status ENUM('pending', 'preparing', 'ready', 'delivered') DEFAULT 'pending',
@@ -25,7 +25,7 @@ CREATE TABLE orders (
 );
 
 -- Order Items Table (many-to-many relationship between orders and menu items)
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
     menu_item_id INT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE order_items (
 );
 
 -- Employees Table
-CREATE TABLE employees (
+CREATE TABLE IF NOT EXISTS employees (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE employees (
 );
 
 -- Reservations Table
-CREATE TABLE reservations (
+CREATE TABLE IF NOT EXISTS reservations (
     id INT PRIMARY KEY AUTO_INCREMENT,
     customer_name VARCHAR(100) NOT NULL,
     customer_email VARCHAR(100),
@@ -56,11 +56,14 @@ CREATE TABLE reservations (
     time TIME NOT NULL,
     party_size INT NOT NULL,
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    table_id INT,  -- Adding the table_id column
+    FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE
 );
 
+
 -- Customers Table
-CREATE TABLE customers (
+CREATE TABLE IF NOT EXISTS customers (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
@@ -70,7 +73,7 @@ CREATE TABLE customers (
 );
 
 -- Inventory Items Table
-CREATE TABLE inventory_items (
+CREATE TABLE IF NOT EXISTS inventory_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     quantity INT DEFAULT 0,
@@ -78,14 +81,14 @@ CREATE TABLE inventory_items (
 );
 
 -- Restaurant Tables Table
-CREATE TABLE restaurant_tables (
+CREATE TABLE IF NOT EXISTS restaurant_tables (
     id INT PRIMARY KEY AUTO_INCREMENT,
     capacity INT NOT NULL,
     location VARCHAR(50)
 );
 
 -- Shifts Table
-CREATE TABLE shifts (
+CREATE TABLE IF NOT EXISTS shifts (
     id INT PRIMARY KEY AUTO_INCREMENT,
     employee_id INT NOT NULL,
     start_time TIME NOT NULL,
@@ -95,7 +98,7 @@ CREATE TABLE shifts (
 );
 
 -- Uses Table (tracks usage of inventory items in orders)
-CREATE TABLE uses (
+CREATE TABLE IF NOT EXISTS uses (
     order_id INT NOT NULL,
     item_id INT NOT NULL,
     quantity_used INT NOT NULL,
@@ -105,7 +108,7 @@ CREATE TABLE uses (
 );
 
 -- Contains Table (tracks items contained within orders)
-CREATE TABLE contains (
+CREATE TABLE IF NOT EXISTS contains (
     order_id INT NOT NULL,
     item_id INT NOT NULL,
     quantity INT NOT NULL,
@@ -114,7 +117,7 @@ CREATE TABLE contains (
     FOREIGN KEY (item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
 );
 
---Stored Procedure to get daily sales for the date 
+-- Stored Procedure to get daily sales for the date 
 DELIMITER //
 
 CREATE PROCEDURE GetDailySales(IN sales_date DATE)
@@ -133,7 +136,7 @@ END //
 
 DELIMITER ;
 
--- SQL Function to Check Table Availabilty 
+-- SQL Function to check table availability 
 DELIMITER //
 
 CREATE FUNCTION CheckTableAvailability(reservation_date DATE, reservation_time TIME, party_size INT)
@@ -168,3 +171,5 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
