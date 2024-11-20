@@ -1,40 +1,44 @@
-const mysql = require('mysql');
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec;
+const mysqldump = require('mysqldump');
 
-// Function to perform the database backup
-const backupDatabase = (dbConfig, backupPath) => {
-  // Create the connection to the database
-  const connection = mysql.createConnection(dbConfig);
+// Database configuration
+const dbUser = 'root';
+const dbPassword = 'Pal@382003'; // Replace with environment variable in production
+const dbName = 'restaurant_db';
 
-  // Get today's date for backup filename
-  const date = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  const backupFile = path.join(backupPath, `restaurant_backup_${date}.sql`);
+// Directory to store backups
+const backupDir = path.join(__dirname, 'backups');
 
-  // Command to execute mysqldump
-  const backupCommand = `mysqldump -u ${dbConfig.user} -p${dbConfig.password} ${dbConfig.database} > ${backupFile}`;
+// Ensure the backup directory exists
+if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir, { recursive: true });
+}
 
-  // Connect to the database
-  connection.connect((err) => {
-    if (err) {
-      console.error('Error connecting to the database: ', err);
-      return;
+// Function to perform the backup
+const backupDatabase = async () => {
+    const date = new Date().toISOString().split('T')[0]; // e.g., "2024-11-20"
+    const backupFileName = `restaurant_backup_${date}.sql`;
+    const backupFilePath = path.join(backupDir, backupFileName);
+
+    try {
+        await mysqldump({
+            connection: {
+                host: 'localhost', // Adjust if not using localhost
+                user: dbUser,
+                password: dbPassword,
+                database: dbName,
+            },
+            dumpToFile: backupFilePath,
+        });
+
+        console.log(`Database backup completed: ${backupFileName}`);
+        console.log('Backup file path:', backupDir);
+        return backupFileName;
+    } catch (error) {
+        console.error('Error during backup:', error.message);
+        throw new Error('Database backup failed');
     }
-    console.log('Connected to the database.');
-  });
-
-  // Execute backup command
-  exec(backupCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error during backup: ${stderr}`);
-      return;
-    }
-    console.log('Database backup completed successfully.');
-  });
-
-  // Close the database connection
-  connection.end();
 };
 
 module.exports = { backupDatabase };
