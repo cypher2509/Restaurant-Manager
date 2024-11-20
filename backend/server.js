@@ -17,10 +17,9 @@ app.get('/', (req, res) => {
     res.json({ message: 'Restaurant Management System API' });
 });
 
-// Import routes - following RESTful naming conventions
 const menuRoutes = require('./routes/menuRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-// const reservationRoutes = require('./routes/reservationRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 
@@ -45,8 +44,9 @@ app.get('/tables', (req, res) => {
  * PUT /api/menu/:id - Update menu item
  * DELETE /api/menu/:id - Remove menu item
  */
-app.use('/api/menu', menuRoutes);
+app.use('/menu', menuRoutes);
 
+app.use('/inventory', inventoryRoutes);
 /**
  * Order Routes
  * GET /api/orders - Get all orders
