@@ -22,7 +22,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
-
+const backupRoute = require('./routes/backupRoute')
 // Route to get all tables
 
 app.use('/menu', menuRoutes);
@@ -35,6 +35,7 @@ app.use('/employees', employeeRoutes);
 
 app.use('/reports', reportRoutes);
 
+app.use('/backup', backupRoute);
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);

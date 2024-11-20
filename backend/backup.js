@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const mysqldump = require('mysqldump');
 
 // Function to perform the database backup
 const backupDatabase = (dbConfig, backupPath) => {
