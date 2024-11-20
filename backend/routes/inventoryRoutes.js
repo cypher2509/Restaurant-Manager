@@ -37,10 +37,13 @@ router.get('/usage/:id', async(req,res,next)=> {
         next(err);
 }});
 
-routes.get('/ordered', async(req,res,next)=>{
+router.get('/ordered', async(req,res,next)=>{
     try{
         const query = 'SELECT * FROM inventory_orders';
     }
+    catch (err) {
+        next(err);
+}
 })
 
 
