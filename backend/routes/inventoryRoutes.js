@@ -14,4 +14,18 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.put('/', async (req, res, next) => {
+    try {
+        const query = 'UPDATE inventory_items SET quantity = ? WHERE id = ?';
+
+        const { quantity, id } = req.body;
+        const [rows] = await db.query(query, [quantity, id]);
+        console.log(req.body)
+        res.json({ message: 'Quantity updated successfully', affectedRows: rows.affectedRows });
+    } catch (err) {
+        next(err);
+}});
+
+
+
 module.exports = router;
