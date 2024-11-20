@@ -93,6 +93,15 @@ CREATE TABLE IF NOT EXISTS inventory_usage (
     FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS inventory_orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    inventory_item_id INT NOT NULL,
+    cost_per_unit INT NOT NULL,
+    quantity INT NOT NULL,
+    order_date DATE NOT NULL,
+    FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id)
+)
+
 -- Restaurant Tables Table
 CREATE TABLE IF NOT EXISTS restaurant_tables (
     id INT PRIMARY KEY AUTO_INCREMENT,

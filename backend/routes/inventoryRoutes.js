@@ -26,6 +26,22 @@ router.put('/', async (req, res, next) => {
         next(err);
 }});
 
+router.get('/usage/:id', async(req,res,next)=> {
+    try{
+        const id = [req.params.id]
+        const query = 'SELECT * FROM inventory_usage WHERE menu_item_id = ?';
+        const [rows] = await db.query(query, id);
+        res.json(rows);
+    }
+    catch (err) {
+        next(err);
+}});
+
+routes.get('/ordered', async(req,res,next)=>{
+    try{
+        const query = 'SELECT * FROM inventory_orders';
+    }
+})
 
 
 module.exports = router;
