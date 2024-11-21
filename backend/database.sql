@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_id INT,
     table_number INT,
     status ENUM('pending', 'completed', 'priority') DEFAULT 'pending',
+    is_available BOOLEAN DEFAULT TRUE, 
     total_amount DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -240,3 +241,28 @@ END //
 DELIMITER ;
 
 
+
+CREATE VIEW view_customer_order_details AS
+SELECT 
+    c.id AS customer_id,
+    c.first_name AS customer_first_name,
+    c.last_name AS customer_last_name,
+    c.contact_number AS customer_contact_number,
+    c.email AS customer_email,
+    o.id AS order_id,
+    o.table_number AS order_table_number,
+    o.status AS order_status,
+    o.total_amount AS order_total_amount,
+    o.created_at AS order_created_at,
+    o.updated_at AS order_updated_at,
+    oi.id AS order_item_id,
+    oi.quantity AS order_item_quantity,
+    mi.id AS menu_item_id,
+    mi.name AS menu_item_name,
+    mi.description AS menu_item_description,
+    mi.price AS menu_item_price,
+    mi.category AS menu_item_category
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+JOIN order_items oi ON o.id = oi.order_id
+JOIN menu_items mi ON oi.menu_item_id = mi.id;
