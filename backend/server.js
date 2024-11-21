@@ -24,6 +24,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const backupRoute = require('./routes/backupRoute');
 const reservationRoutes = require('./routes/reservationRoutes');
+const shiftRoutes = require('./routes/shiftRoutes');
 // Route to get all tables
 
 app.use('/menu', menuRoutes);
@@ -39,6 +40,9 @@ app.use('/reports', reportRoutes);
 app.use('/backup', backupRoute);
 
 app.use('/reservations', reservationRoutes);
+
+app.use('/shifts', shiftRoutes);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);

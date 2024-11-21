@@ -5,6 +5,7 @@ drop table order_items;
 drop table inventory_usage;
 drop table menu_items;
 drop table orders;
+drop table shifts;
 drop TABLE employees;
 drop table reservations;
 drop table inventory_items;
@@ -20,13 +21,21 @@ CREATE TABLE IF NOT EXISTS menu_items (
     category VARCHAR(50) NOT NULL
 );
 
+-- Customers Table
+CREATE TABLE IF NOT EXISTS customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    contact_number VARCHAR(15),
+    email VARCHAR(100) UNIQUE
+);
+
 -- Orders Table
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT,
     table_number INT,
     status ENUM('pending', 'completed', 'priority') DEFAULT 'pending',
-    is_available BOOLEAN DEFAULT TRUE, 
     total_amount DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -53,6 +62,13 @@ CREATE TABLE IF NOT EXISTS employees (
     email VARCHAR(100) UNIQUE NOT NULL
 );
 
+-- Restaurant Tables Table
+CREATE TABLE IF NOT EXISTS restaurant_tables (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    capacity INT NOT NULL,
+    location VARCHAR(50)
+);
+
 -- Reservations Table
 CREATE TABLE IF NOT EXISTS reservations (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -63,19 +79,11 @@ CREATE TABLE IF NOT EXISTS reservations (
     party_size INT NOT NULL,
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    table_id INT,  -- Adding the table_id column
     FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE
 );
 
 
--- Customers Table
-CREATE TABLE IF NOT EXISTS customers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    contact_number VARCHAR(15),
-    email VARCHAR(100) UNIQUE,
-);
+
 
 -- Inventory Items Table
 CREATE TABLE IF NOT EXISTS inventory_items (
@@ -94,21 +102,7 @@ CREATE TABLE IF NOT EXISTS inventory_usage (
     FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS inventory_orders(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    inventory_item_id INT NOT NULL,
-    cost_per_unit INT NOT NULL,
-    quantity INT NOT NULL,
-    order_date DATE NOT NULL,
-    FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id)
-)
 
--- Restaurant Tables Table
-CREATE TABLE IF NOT EXISTS restaurant_tables (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    capacity INT NOT NULL,
-    location VARCHAR(50)
-);
 
 -- Shifts Table
 CREATE TABLE IF NOT EXISTS shifts (
@@ -175,8 +169,8 @@ INSERT INTO inventory_usage (menu_item_id, inventory_item_id, usage_quantity) VA
 (3, 4, 1),  -- 1 unit of Romaine Lettuce
 (3, 5, 1);  -- 1 unit of Caesar Dressing
 
-INSERT INTO customers (name, contact_no, email) VALUES
-('John Doe', '123-456-7890', 'john.doe@example.com');
+INSERT INTO customers (first_name, last_name, contact_number, email) VALUES
+('John','Doe', '123-456-7890', 'john.doe@example.com');
 
 INSERT INTO orders (customer_id, table_number, status, total_amount) VALUES
 (1, 5, 'pending', 0.00);
@@ -184,6 +178,29 @@ INSERT INTO orders (customer_id, table_number, status, total_amount) VALUES
 -- Ordering 2 Margherita Pizzas
 INSERT INTO order_items (order_id, menu_item_id, quantity) VALUES
 (1, 1, 4);
+
+-- Inserting sample data into employees table
+INSERT INTO employees (first_name, last_name, role, hourly_wage, email)
+VALUES
+('John', 'Doe', 'Manager', 25, 'john.doe@example.com'),
+('Jane', 'Smith', 'Waiter', 15, 'jane.smith@example.com'),
+('Alice', 'Johnson', 'Chef', 20, 'alice.johnson@example.com'),
+('Bob', 'Brown', 'Waiter', 15, 'bob.brown@example.com'),
+('Charlie', 'Davis', 'Cleaner', 12, 'charlie.davis@example.com');
+
+-- Inserting sample data into shifts table
+INSERT INTO shifts (employee_id, start_time, end_time, shift_date)
+VALUES
+(1, '08:00:00', '16:00:00', '2024-11-21'),
+(2, '10:00:00', '18:00:00', '2024-11-21'),
+(3, '12:00:00', '20:00:00', '2024-11-21'),
+(4, '09:00:00', '17:00:00', '2024-11-21'),
+(5, '14:00:00', '22:00:00', '2024-11-21'),
+(1, '08:00:00', '16:00:00', '2024-11-22'),
+(2, '10:00:00', '18:00:00', '2024-11-22'),
+(3, '12:00:00', '20:00:00', '2024-11-22'),
+(4, '09:00:00', '17:00:00', '2024-11-22'),
+(5, '14:00:00', '22:00:00', '2024-11-22');
 
 -- Stored Procedure to get daily sales for the date 
 DELIMITER //
@@ -240,8 +257,6 @@ END //
 
 DELIMITER ;
 
-
-
 CREATE VIEW view_customer_order_details AS
 SELECT 
     c.id AS customer_id,
@@ -266,3 +281,24 @@ FROM customers c
 JOIN orders o ON c.id = o.customer_id
 JOIN order_items oi ON o.id = oi.order_id
 JOIN menu_items mi ON oi.menu_item_id = mi.id;
+
+-- SELECT * FROM view_customer_order_details;
+
+-- MySQL does not support Hash indexes so all are by default B+ Tree indexes
+-- Unclustered Hash index for status (ideal for equality searches)
+CREATE INDEX idx_status_hash ON orders(status) USING HASH;
+
+-- Unclustered Hash index for customer_id (ideal for equality searches)
+CREATE INDEX idx_customer_id_hash ON orders(customer_id) USING HASH;
+
+-- B+ Tree index for created_at (ideal for range queries and sorting in descending order)
+CREATE INDEX idx_created_at ON orders(created_at);
+
+SHOW INDEXES FROM orders;
+
+-- Potential Queries we can execute using these indices:
+-- SELECT * FROM orders WHERE status = 'priority';
+-- SELECT * FROM orders WHERE customer_id = 123;
+-- SELECT * FROM orders ORDER BY created_at DESC;
+
+

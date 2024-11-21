@@ -3,85 +3,99 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-/**
- * @route GET /api/employees
- * @description Get all employees
- */
-router.get('/', (req, res) => {
-    const query = 'SELECT * FROM Employee';
-    db.query(query, (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
+
+router.get('/', async (req, res, next) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM employees');
+        res.json(rows);
+    } catch (err) {
+        next(err);
+    }
 });
 
-/**
- * @route GET /api/employees/:id
- * @description Get a specific employee
- */
-router.get('/:id', (req, res) => {
-    const query = 'SELECT * FROM Employee WHERE Employee_ID = ?';
-    db.query(query, [req.params.id], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+
+router.get('/:id', async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const [rows] = await db.query('SELECT * FROM employees WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Employee not found' });
         }
-        if (results.length === 0) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        res.json(results[0]);
-    });
+        res.json(rows[0]);
+    } catch (err) {
+        next(err);
+    }
 });
 
-/**
- * @route POST /api/employees
- * @description Add a new employee
- */
-router.post('/', (req, res) => {
-    const { first_name, last_name, contact_number, role, hourly_wage } = req.body;
-    const query = 'INSERT INTO Employee (First_Name, Last_Name, Contact_Number, Role, Hourly_Wage) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [first_name, last_name, contact_number, role, hourly_wage], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.status(201).json({ message: 'Employee added', id: results.insertId });
-    });
+
+router.post('/', async (req, res, next) => {
+    const { first_name, last_name, role, hourly_wage, email } = req.body;
+    try {
+        const result = await db.query(
+            'INSERT INTO employees (first_name, last_name, role, hourly_wage, email) VALUES (?, ?, ?, ?, ?)',
+            [first_name, last_name, role, hourly_wage, email]
+        );
+        res.status(201).json({ id: result.insertId, first_name, last_name, role, hourly_wage, email });
+    } catch (err) {
+        next(err);
+    }
 });
 
-/**
- * @route PUT /api/employees/:id
- * @description Update employee information
- */
-router.put('/:id', (req, res) => {
-    const { first_name, last_name, contact_number, role, hourly_wage } = req.body;
-    const query = 'UPDATE Employee SET First_Name = ?, Last_Name = ?, Contact_Number = ?, Role = ?, Hourly_Wage = ? WHERE Employee_ID = ?';
-    db.query(query, [first_name, last_name, contact_number, role, hourly_wage, req.params.id], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+
+
+router.put('/:id', async (req, res, next) => {
+    const { id } = req.params; // Extract employee ID from the URL parameter
+    const { first_name, last_name, role, hourly_wage, email } = req.body;
+
+    // Check if all required fields are provided
+    if (!first_name || !last_name || !role || !hourly_wage || !email) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        console.log(`Updating employee with ID: ${id}`);
+        
+        // Update the employee details in the database
+        const [result] = await db.query(
+            'UPDATE employees SET first_name = ?, last_name = ?, role = ?, hourly_wage = ?, email = ? WHERE id = ?',
+            [first_name, last_name, role, hourly_wage, email, id]
+        );
+
+        console.log(`Query result: ${JSON.stringify(result)}`);
+
+        if (result.affectedRows === 0) {
+            // If no rows were updated, return a 404 error (employee not found)
+            return res.status(404).json({ error: 'Employee not found' });
         }
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        res.json({ message: 'Employee updated' });
-    });
+
+        // Send back the updated employee data
+        res.status(200).json({
+            id,
+            first_name,
+            last_name,
+            role,
+            hourly_wage,
+            email
+        });
+    } catch (err) {
+        console.error(err); // Log any error to the console for debugging
+        next(err); // Pass errors to the error-handling middleware
+    }
 });
 
-/**
- * @route DELETE /api/employees/:id
- * @description Remove an employee
- */
-router.delete('/:id', (req, res) => {
-    const query = 'DELETE FROM Employee WHERE Employee_ID = ?';
-    db.query(query, [req.params.id], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
+
+
+router.delete('/:id', async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const result = await db.query('DELETE FROM employees WHERE id = ?', [id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Employee not found' });
         }
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ message: 'Employee not found' });
-        }
-        res.json({ message: 'Employee deleted' });
-    });
+        res.status(204).send(); // Successfully deleted, no content to return
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;
