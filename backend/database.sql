@@ -76,15 +76,21 @@ CREATE TABLE IF NOT EXISTS reservations (
     table_id INT NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
+    table_id INT,  -- Adding the table_id column
     party_size INT NOT NULL,
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE
 );
 
-
-
-
+CREATE TABLE IF NOT EXISTS inventory_orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    inventory_item_id INT NOT NULL,
+    cost_per_unit INT NOT NULL,
+    quantity INT NOT NULL,
+    order_date DATE NOT NULL,
+    FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id)
+)
 -- Inventory Items Table
 CREATE TABLE IF NOT EXISTS inventory_items (
     id INT AUTO_INCREMENT PRIMARY KEY,        
