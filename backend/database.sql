@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS reservations (
     table_id INT NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
-    table_id INT,  -- Adding the table_id column
     party_size INT NOT NULL,
     status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -230,36 +229,24 @@ DELIMITER ;
 -- SQL Function to check table availability 
 DELIMITER //
 
-CREATE FUNCTION CheckTableAvailability(reservation_date DATE, reservation_time TIME, party_size INT)
-RETURNS BOOLEAN
-DETERMINISTIC
-READS SQL DATA
-BEGIN
-    DECLARE available_capacity INT;
+DELIMITER //
 
-    -- Calculate total capacity of unreserved tables
-    SELECT 
-        SUM(capacity)
-    INTO 
-        available_capacity
-    FROM 
-        restaurant_tables
+CREATE PROCEDURE GetAvailableTables(IN reservation_date DATE, IN reservation_time TIME, IN party_size INT)
+BEGIN
+    -- Return all tables that are available for the given date, time, and party size
+    SELECT id AS table_id, capacity, location
+    FROM restaurant_tables
     WHERE 
         id NOT IN (
             SELECT DISTINCT table_id
             FROM reservations
-            WHERE date = reservation_date 
-            AND time = reservation_time
-            AND status = 'confirmed'
-        );
-
-    -- Return TRUE if enough capacity is available
-    IF available_capacity > party_size THEN 
-		return TRUE; 
-	else
-		return False; 
-	end if; 
-END //
+            WHERE date = reservation_date
+              AND time = reservation_time
+              AND status = 'confirmed'
+        )
+      AND capacity >= party_size;
+END;
+//
 
 DELIMITER ;
 
