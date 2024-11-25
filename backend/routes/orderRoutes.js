@@ -9,7 +9,7 @@ const db = require('../config/db');
  */
 router.get('/completed', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM orders WHERE status = "completed"');
+        const [rows] = await db.query('SELECT * FROM orders WHERE status = "completed" AND DATE(created_at) = CURDATE()');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -22,7 +22,7 @@ router.get('/completed', async (req, res) => {
  */
 router.get('/pending', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM orders WHERE status = "pending"');
+        const [rows] = await db.query('SELECT * FROM orders WHERE status = "pending" AND DATE(created_at) = CURDATE()');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -31,7 +31,7 @@ router.get('/pending', async (req, res) => {
 
 router.get('/priority', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM orders WHERE status = "priority"');
+        const [rows] = await db.query('SELECT * FROM orders WHERE status = "priority" AND DATE(created_at) = CURDATE()');
         res.json(rows);
     } catch (err) {
         res.status(500).json({ error: err.message });

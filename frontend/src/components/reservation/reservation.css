@@ -71,7 +71,7 @@
     color: white;
 }
 
-.available-reservations{
+.ongoing-reservations{
     background-color:#E9E9E9 ;
     grid-row: 3/4;
     grid-column: 2/6;
@@ -86,6 +86,6 @@ i{
     color: black ;
 }
 
-.available-reservations .count{
+.ongoing-reservations .count{
     margin: 0%;
 }

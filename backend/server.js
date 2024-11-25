@@ -25,6 +25,8 @@ const reportRoutes = require('./routes/reportRoutes');
 const backupRoute = require('./routes/backupRoute');
 const reservationRoutes = require('./routes/reservationRoutes');
 const shiftRoutes = require('./routes/shiftRoutes');
+const tableRoutes = require('./routes/tableRoutes');
+const customerRoutes = require('./routes/customerRoutes')
 // Route to get all tables
 
 app.use('/menu', menuRoutes);
@@ -42,6 +44,10 @@ app.use('/backup', backupRoute);
 app.use('/reservations', reservationRoutes);
 
 app.use('/shifts', shiftRoutes);
+
+app.use('/tables', tableRoutes);
+
+app.use('/customers',customerRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

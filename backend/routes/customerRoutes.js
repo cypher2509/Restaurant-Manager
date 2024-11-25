@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-router.get('/customers', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         // Fetch all customers from the database
         const [customers] = await db.query(
@@ -25,17 +25,18 @@ router.get('/customers', async (req, res) => {
 });
 
 
-router.get('/customers/check', async (req, res) => {
+router.get('/check', async (req, res) => {
     const { contactNumber } = req.query;
+    console.log(contactNumber)
 
     try {
         const [customerResult] = await db.query(
-            'SELECT id, first_name, last_name FROM customers WHERE contact_number = ?',
+            'SELECT * FROM customers WHERE contact_number = ?',
             [contactNumber]
         );
 
         if (customerResult.length === 0) {
-            return res.status(404).json({ message: 'Customer not found' });
+            return res.status(200).json({ message: 'Customer not found' });
         }
 
         res.status(200).json({ 
@@ -44,10 +45,11 @@ router.get('/customers/check', async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
+        console.log( err.message )
     }
 });
 
-router.post('/customers', async (req, res) => {
+router.post('/', async (req, res) => {
     const { firstName, lastName, contactNumber, email } = req.body;
 
     try {
@@ -62,10 +64,11 @@ router.post('/customers', async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
+        console.log(err.message)
     }
 });
 
-router.put('/customers/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { firstName, lastName, contactNumber, email } = req.body;
 
@@ -100,7 +103,7 @@ router.put('/customers/:id', async (req, res) => {
 });
 
 
-router.delete('/customers/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -127,3 +130,6 @@ router.delete('/customers/:id', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+
+module.exports = router;

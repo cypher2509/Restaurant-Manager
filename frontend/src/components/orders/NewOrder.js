@@ -8,7 +8,7 @@ import "./newOrder.css";
 function NewOrder(){
     const [menuItems, setMenuItems] = useState([]);
     const [orderedItems, setOrderedItems] = useState([]);
-    const [orderTotal, setOrderTotal] = useState(0);
+    const [orderTotal, setOrderTotal] = useState(0.00);
     function existingItem(item){
         for(let i of orderedItems){
             if(item.name === i.name){
@@ -33,7 +33,7 @@ function NewOrder(){
             setOrderedItems([...orderedItems, { ...item, quantity: 1 }]);
 
         }
-        setOrderTotal(orderTotal + item.price);        
+        setOrderTotal(orderTotal + parseFloat(item.price));
     }
 
     function updateQuantity(itemName, isIncrement) {
@@ -44,7 +44,7 @@ function NewOrder(){
                     if (orderedItem.name === itemName) {
                         if (isIncrement) {
                             // Increment the quantity
-                            setOrderTotal(orderTotal + orderedItem.price);        
+                            setOrderTotal(parseFloat(orderTotal + orderedItem.price));        
 
                             return { ...orderedItem, quantity: orderedItem.quantity + 1 };
 
@@ -82,12 +82,6 @@ function NewOrder(){
         <form style={{display:"flex"}} action="http://localhost:3000/orders" method='post'>
             <div className="newOrder-form" >
                 <h1>New order</h1>
-                    <div class="mb-3">
-                        <label for="customer_name" class="form-label">Customer Name</label>
-                        <input type="text" name="customer_name" placeholder="Enter customer name" id="customer_name" class="form-control" required/>
-                        <div class="invalid-feedback">Please enter the customer's Name</div>
-                        
-                    </div>
 
                     <div class="mb-3">
                         <label for="employee_id" class="form-label">Employee id</label>

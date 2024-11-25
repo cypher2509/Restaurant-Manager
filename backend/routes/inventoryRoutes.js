@@ -40,6 +40,8 @@ router.get('/usage/:id', async(req,res,next)=> {
 router.get('/ordered', async(req,res,next)=>{
     try{
         const query = 'SELECT * FROM inventory_orders';
+        const [rows] = await db.query(query);
+        res.json(rows);
     }
     catch (err) {
         next(err);

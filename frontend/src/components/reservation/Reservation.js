@@ -6,27 +6,27 @@ import "./reservation.css";
 function Reservation(){
     const[scheduled_reservations, setScheduled_reservations] = useState([]);
     const[completed_reservations, setCompleted_reservations] = useState([]);
-    const[available_reservations, setAvailable_reservations] = useState([]);
+    const[ongoing_reservations, setongoing_reservations] = useState([]);
     
     const [scheduled_reservations_count, setScheduled_reservations_count] = useState(0);
     const [completed_reservations_count, setCompleted_reservations_count] = useState(0);
-    const [available_reservations_count, setAvailable_reservations_count] = useState(0);
+    const [ongoing_reservations_count, setongoing_reservations_count] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(()=>{
         const fetchScheduled = axios.get('http://localhost:3000/reservations/scheduled');
         const fetchCompleted = axios.get('http://localhost:3000/reservations/completed');
-        const fetchAvailable = axios.get('http://localhost:3000/reservations/available');
+        const fetchOngoing = axios.get('http://localhost:3000/reservations/ongoing');
 
-        Promise.all([fetchScheduled, fetchCompleted, fetchAvailable])
-        .then(([scheduledRes, completedRes, availableRes]) => {
+        Promise.all([fetchScheduled, fetchCompleted, fetchOngoing])
+        .then(([scheduledRes, completedRes, ongoingRes]) => {
             setScheduled_reservations(scheduledRes.data);
             setCompleted_reservations(completedRes.data);
-            setAvailable_reservations(availableRes.data);
+            setongoing_reservations(ongoingRes.data);
             setScheduled_reservations_count(scheduledRes.data.length);
             setCompleted_reservations_count(completedRes.data.length);
-            setAvailable_reservations_count(availableRes.data.length);
+            setongoing_reservations_count(ongoingRes.data.length);
             setLoading(false);
         })
         .catch(err => {
@@ -73,9 +73,9 @@ function Reservation(){
                 </div>
             </div>
 
-            <div className="reservations available-reservations">
-                <div className="available-reservations-heading reservations-heading">
-                    <p>available reservations <span className='count'>{available_reservations_count}</span></p>
+            <div className="reservations ongoing-reservations">
+                <div className="ongoing-reservations-heading reservations-heading">
+                    <p>ongoing reservations <span className='count'>{ongoing_reservations_count}</span></p>
                     <a href=""><i class="fa-solid fa-arrow-right fa-rotate-by" style={{rotate: -45 +"deg"}}></i></a>
                 </div>
             </div>
