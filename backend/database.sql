@@ -1,3 +1,4 @@
+
 CREATE DATABASE IF NOT EXISTS restaurant_db;
 USE restaurant_db;
 
@@ -13,7 +14,6 @@ USE restaurant_db;
 -- drop table restaurant_tables;
 -- drop table customers;
 
-select * from order_items;
 -- Menu Items Table
 CREATE TABLE IF NOT EXISTS menu_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS menu_items (
     img VARCHAR(200),
     category VARCHAR(50) NOT NULL
 );
+
+
+
 -- do not change
 INSERT INTO menu_items (name, description, img, price, category) VALUES
 ( 'Cheeseburger', 'A juicy burger with cheese, lettuce, and tomato.', 'https://plus.unsplash.com/premium_photo-1683619761468-b06992704398?q=80&w=1265&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 8.99, 'Main'),
@@ -44,8 +47,9 @@ CREATE TABLE IF NOT EXISTS customers (
 );
 
 -- Orders Table
+-- Orders Table
 CREATE TABLE IF NOT EXISTS orders (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY auto_increment,
     customer_id INT,
     table_number INT,
     status ENUM('pending', 'completed', 'priority') DEFAULT 'pending',
@@ -57,7 +61,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 -- Order Items Table (many-to-many relationship between orders and menu items)
 CREATE TABLE IF NOT EXISTS order_items (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY auto_increment,
     order_id INT NOT NULL,
     menu_item_id INT NOT NULL,
     quantity INT NOT NULL,
@@ -105,11 +109,20 @@ CREATE TABLE IF NOT EXISTS reservations (
     date DATE NOT NULL,
     time TIME NOT NULL,
     party_size INT NOT NULL,
-    status ENUM('confirmed', 'cancelled', 'completed') DEFAULT 'confirmed',
+    status ENUM('confirmed', 'cancelled', 'completed','ongoing') DEFAULT 'confirmed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (table_id) REFERENCES restaurant_tables(id) ON DELETE CASCADE
 );
 
+select * from reservations where date = CURDATE();
+
+SELECT r.id, r.customer_id, r.table_id, r.date, r.time, r.party_size, r.status, r.created_at, 
+                    c.first_name, c.last_name, rt.capacity, rt.location
+             FROM reservations r
+             JOIN customers c ON r.customer_id = c.id
+             JOIN restaurant_tables rt ON r.table_id = rt.id
+             WHERE r.status = 'confirmed' AND r.date = CURDATE()
+             ORDER BY r.time DESC;
 -- Inventory Items Table
 CREATE TABLE IF NOT EXISTS inventory_items (
     id INT AUTO_INCREMENT PRIMARY KEY,        
@@ -117,6 +130,8 @@ CREATE TABLE IF NOT EXISTS inventory_items (
     quantity INT NOT NULL DEFAULT 0,          
     restock_threshold INT NOT NULL DEFAULT 30
 );
+
+select * from reservations where date = curdate();
 
 CREATE TABLE if NOT EXISTS inventory_usage (
     menu_item_id INT NOT NULL,                 
@@ -165,6 +180,9 @@ DELIMITER ;
 
 DELIMITER //
 
+select * from order_items;
+select * from inventory_items;
+
 CREATE TRIGGER check_and_update_inventory_on_order_item_insert
 BEFORE INSERT ON order_items
 FOR EACH ROW
@@ -210,7 +228,6 @@ BEGIN
     );
 END;
 //
-
 DELIMITER ;
 
 DELIMITER //
@@ -233,7 +250,21 @@ BEGIN
                 AND status = 'confirmed'
         )
       AND capacity >= party_size;
-END //
+END; //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER set_incrementing_id
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+    IF NEW.id IS NULL THEN
+        SET NEW.id = (SELECT IFNULL(MAX(id), 0) + 1 FROM orders);
+    END IF;
+END;
+//
 
 DELIMITER ;
 
