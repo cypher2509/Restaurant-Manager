@@ -64,20 +64,9 @@ router.get('/:id', async (req, res) => {
  * @description Create a new order
  */
 router.post('/', async (req, res) => {
-    const { contactNumber, tableNo, orderTotal, orderDate, orderedItems } = req.body;
-
+    const { customerId, tableNo, orderTotal, orderDate, orderedItems } = req.body;
+    console.log(req.body);
     try {
-        // Fetch the customer ID based on the contact number
-        const [customerResult] = await db.query(
-            'SELECT id FROM customers WHERE contact_number = ?',
-            [contactNumber]
-        );
-
-        if (customerResult.length === 0) {
-            return res.status(404).json({ error: 'Customer not found' });
-        }
-
-        const customerId = customerResult[0].id;
 
         // Insert the order into the orders table
         const [orderResult] = await db.query(

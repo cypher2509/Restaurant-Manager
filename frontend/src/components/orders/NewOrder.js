@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 
 import "./newOrder.css";
-
-
 
 function NewOrder(){
     const [menuItems, setMenuItems] = useState([]);
     const [orderedItems, setOrderedItems] = useState([]);
     const [orderTotal, setOrderTotal] = useState(0.00);
+    const {customerId} = useParams()
     function existingItem(item){
         for(let i of orderedItems){
             if(item.name === i.name){
@@ -177,7 +177,7 @@ function NewOrder(){
             <input type="hidden" name="total_amount" value={orderTotal.toFixed(2)} />
             <input type="hidden" name="date" value={new Date().toISOString()} />
             <input type="hidden" name="items" value={JSON.stringify(orderedItems)} />
-
+            
 
         </form>
         </div> 

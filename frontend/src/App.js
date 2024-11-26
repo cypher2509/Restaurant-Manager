@@ -13,7 +13,7 @@ function App() {
     <Header/>
       <Routes>
         <Route path="/" element={<HomePage/>}></Route>
-        <Route path="/order/new" element= {<NewOrder/>}> </Route>
+        <Route path="/order/new/:customerId" element= {<NewOrder/>}> </Route>
         <Route path="/order/:id" element ={<EditOrder/>}> </Route>
         <Route path="/customerCheck/:checkFor" element ={<CustomerAuthentication/>}></Route>
         <Route path="/reservation/new/:customerId" element ={<ReservationForm/>}></Route>

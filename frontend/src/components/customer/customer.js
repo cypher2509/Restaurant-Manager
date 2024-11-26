@@ -53,7 +53,7 @@ function CustomerAuthentication() {
             if (response.data && response.data.customerId) {
                 setError(''); // Clear error
                 // Redirect to homepage
-                navigate('/');
+                navigate(`/${checkFor}/new/${response.data.customer.id}`);
             } else {
                 setError('Failed to create customer.');
             }

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
-import "./order.css"
-
-
+import "./order.css";
 
 function Order(){
     const [orders, setOrders] = useState([]);
@@ -58,7 +56,7 @@ function Order(){
             <div className="order-table">
                 <div className="table-header">
                     <h1>orders</h1> 
-                    <form action="/order/new" method="get">
+                    <form action="/customerCheck/order" method="get">
                         <button className='btn-add'><i class="fa-solid fa-plus"></i></button>
                     </form>
                 
@@ -106,9 +104,6 @@ function Order(){
             crossorigin="anonymous"
             />
         </div>
-        
-        
-        
     )
 }
 
