@@ -6,6 +6,9 @@
         border-radius: 2em;
     margin: 0 1em 1em 1em;
     box-shadow: 1px 1px 3px black;
+    overflow: scroll;
+
+
 }
 
 .table-map h1{
@@ -19,7 +22,6 @@
     align-content: center;
     width: 95%;
     height: fit-content;
-
 }
 
 .tables img{

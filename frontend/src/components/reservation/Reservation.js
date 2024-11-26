@@ -28,13 +28,13 @@ function Reservation(){
                     fetchOngoing
                 ]);
 
-                setScheduled_reservations(scheduledRes.data);
-                setCompleted_reservations(completedRes.data);
-                setongoing_reservations(ongoingRes.data);
+                setScheduled_reservations(scheduledRes.data.reservations);
+                setCompleted_reservations(completedRes.data.reservations);
+                setongoing_reservations(ongoingRes.data.reservations);
 
-                setScheduled_reservations_count(scheduledRes.data.length);
-                setCompleted_reservations_count(completedRes.data.length);
-                setongoing_reservations_count(ongoingRes.data.length);
+                setScheduled_reservations_count(scheduledRes.data.reservations.length);
+                setCompleted_reservations_count(completedRes.data.reservations.length);
+                setongoing_reservations_count(ongoingRes.data.reservations.length);
 
                 setLoading(false);
             } catch (err) {

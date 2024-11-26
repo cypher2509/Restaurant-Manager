@@ -1,0 +1,41 @@
+.inventory-table-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.inventory-table th,
+.inventory-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.inventory-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.status.low-stock {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+
+.status.in-stock {
+    background-color: #ccffcc;
+    color: #006600;
+}

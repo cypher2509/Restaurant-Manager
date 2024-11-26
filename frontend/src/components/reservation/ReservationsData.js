@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 function ReservationsData() {
+    const {status} = useParams();
+    console.log(status)
     const [reservations, setReservations] = useState([]);
-    const [status, setStatus] = useState('confirmed'); // Default status filter
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -27,21 +29,8 @@ function ReservationsData() {
 
     return (
         <div className="container mt-4">
-            <h1 className="text-center">Reservations</h1>
+            <h1 className="text-center">{status} reservations</h1>
             
-            <div className="d-flex justify-content-between align-items-center my-3">
-                <label htmlFor="status" className="form-label">Filter by Status:</label>
-                <select
-                    id="status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    className="form-select w-25"
-                >
-                    <option value="confirmed">Confirmed</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="completed">Completed</option>
-                </select>
-            </div>
 
             {loading ? (
                 <p>Loading reservations...</p>
@@ -59,8 +48,8 @@ function ReservationsData() {
                             <th>Date</th>
                             <th>Time</th>
                             <th>Party Size</th>
-                            <th>Status</th>
                             <th>Location</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -72,13 +61,20 @@ function ReservationsData() {
                                 <td>{reservation.date}</td>
                                 <td>{reservation.time}</td>
                                 <td>{reservation.party_size}</td>
-                                <td>{reservation.status}</td>
                                 <td>{reservation.location}</td>
+                                <td><a href={`/reservation/edit/${reservation.id}`}>edit</a></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                
             )}
+            <link
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+                crossOrigin="anonymous"
+            />
         </div>
     );
 }

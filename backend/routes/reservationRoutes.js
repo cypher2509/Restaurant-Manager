@@ -4,13 +4,16 @@ const db = require('../config/db');
 
 
 router.get('/', async (req, res) => {
+    const {status} = req.query;
     try {
         const [reservations] = await db.query(
             `SELECT r.id, r.customer_id, r.table_id, r.date, r.time, r.party_size, r.status, r.created_at, 
                     c.first_name, c.last_name, rt.capacity, rt.location
              FROM reservations r
              JOIN customers c ON r.customer_id = c.id
-             JOIN restaurant_tables rt ON r.table_id = rt.id`
+             JOIN restaurant_tables rt ON r.table_id = rt.id
+             WHERE r.status = ? AND r.date = CURDATE()
+             ORDER BY r.time DESC;`,[status]
         );
 
         if (reservations.length === 0) {
@@ -28,7 +31,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-
     try {
         const [reservation] = await db.query(
             `SELECT r.id, r.customer_id, r.table_id, r.date, r.time, r.party_size, r.status, r.created_at, 
@@ -72,16 +74,16 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/reservations/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { customerId, tableId, date, time, partySize, status } = req.body;
-
+    const { customer_id, table_id, date, time, party_size, status } = req.body;
+    console.log(req.body);
     try {
         const [result] = await db.query(
             `UPDATE reservations 
              SET customer_id = ?, table_id = ?, date = ?, time = ?, party_size = ?, status = ? 
              WHERE id = ?`,
-            [customerId, tableId, date, time, partySize, status, id]
+            [ customer_id, table_id, date, time, party_size, status, id]
         );
 
         if (result.affectedRows === 0) {

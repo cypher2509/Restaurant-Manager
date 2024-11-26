@@ -8,6 +8,7 @@ import CustomerAuthentication from "./components/customer/customer.js";
 import ReservationsData from './components/reservation/ReservationsData.js'
 import NewReservation from "./components/reservation/NewReservation.js";
 import EditReservation from "./components/reservation/EditReservation.js";
+import InventoryTable from "./components/inventory/inventoryTable.js";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/reservation/new/:customerId" element ={<NewReservation/>}></Route>
         <Route path="/reservation/edit/:Id" element ={<EditReservation/>}></Route>
         <Route path="/reservations/data/:status" element ={<ReservationsData/>}></Route>
+        <Route path="/inventory/data" element ={<InventoryTable/>}></Route>
 
 
       </Routes>
