@@ -40,7 +40,7 @@ function Reservation(){
     return(
         <div className="reservation-container">
             <div className="reservation-btn-container">
-                <form className='btn-reservation btn-add-res'action="" method="get">
+                <form className='btn-reservation btn-add-res'action="/customerCheck/reservation" method="get">
                         <button className='btn'><i class="fa-regular fa-plus"></i></button>
                 </form>
                 <form className='btn-reservation btn-edit' action="" method="get">

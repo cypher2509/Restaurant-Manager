@@ -224,13 +224,16 @@ BEGIN
         id NOT IN (
             SELECT DISTINCT table_id
             FROM reservations
-            WHERE date = reservation_date
-              AND time = reservation_time
-              AND status = 'confirmed'
+            WHERE 
+                date = reservation_date
+                AND (
+                    -- Check for overlapping reservations within a 1-hour window
+                    (TIME_TO_SEC(reservation_time) BETWEEN TIME_TO_SEC(time) - 3600 AND TIME_TO_SEC(time) + 3600)
+                )
+                AND status = 'confirmed'
         )
       AND capacity >= party_size;
-END;
-//
+END //
 
 DELIMITER ;
 

@@ -27,8 +27,6 @@ router.get('/', async (req, res) => {
 
 router.get('/check', async (req, res) => {
     const { contactNumber } = req.query;
-    console.log(contactNumber)
-
     try {
         const [customerResult] = await db.query(
             'SELECT * FROM customers WHERE contact_number = ?',

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 function CustomerAuthentication() {
+    const {checkFor} = useParams();
     const [contact, setContact] = useState(''); // State for contact input
     const [customer, setCustomer] = useState(null); // State for customer details
     const [error, setError] = useState(''); // State for error messages
@@ -24,7 +25,7 @@ function CustomerAuthentication() {
                 setCustomer(response.data.customer); // Set customer data
                 setError(''); // Clear error if data is found
                 // Redirect to homepage
-                navigate('\new');
+                navigate(`/${checkFor}/new/${response.data.customer.id}`);
             } else {
                 setCustomer(null); // Clear customer data
                 setError('Customer does not exist. Please create a new customer.');
@@ -72,12 +73,12 @@ function CustomerAuthentication() {
     };
 
     return (
-        <div className="customer-container">
+        <div className="customer-container " > 
             <form
                 onSubmit={handleCheckCustomer}
             >
-                <div className="newOrder-form">
-                    <h1>Check Customer</h1>
+                <div className="newOrder-form col-6 offset-3" style={{height:80+'%'}}>
+                    <h1>find existing customer</h1>
                     <div className="mb-3">
                         <label htmlFor="customer_contact" className="form-label">
                             Customer Contact
@@ -102,14 +103,13 @@ function CustomerAuthentication() {
                 </div>
             </form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className='col-6 offset-3' style={{ color: "red" }}>{error}</p>}
 
             {!customer && error && (
                 <form
                     onSubmit={handleCreateCustomer}
-                    style={{ display: "flex", flexDirection: "column", width: "300px", marginTop: "20px" }}
                 >
-                    <div className="newOrder-form">
+                    <div className="newOrder-form col-6 offset-3">
                         <h1>Create New Customer</h1>
                         <div className="mb-3">
                             <label htmlFor="first_name" className="form-label">
