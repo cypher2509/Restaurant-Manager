@@ -4,7 +4,7 @@ const mysqldump = require('mysqldump');
 
 // Database configuration
 const dbUser = 'root';
-const dbPassword = 'L0kesh@123'; // Replace with environment variable in production
+const dbPassword = 'Pal@382003'; // Replace with environment variable in production
 const dbName = 'restaurant_db';
 
 // Directory to store backups
