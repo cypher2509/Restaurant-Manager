@@ -64,7 +64,7 @@ router.get('/:id', async (req, res) => {
  * @description Create a new order
  */
 router.post('/', async (req, res) => {
-    const { customerId, tableNo, orderTotal, orderDate, orderedItems } = req.body;
+    const { customerId, table_number, total_amount, date, items } = req.body;
     console.log(req.body);
     try {
 

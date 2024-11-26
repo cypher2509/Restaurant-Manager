@@ -5,7 +5,9 @@ import HomePage from "./components/homePage/HomePage.js"
 import NewOrder from "./components/orders/NewOrder.js";
 import EditOrder from "./components/orders/EditOrder.js";
 import CustomerAuthentication from "./components/customer/customer.js";
-import ReservationForm from "./components/reservation/ReservationForm.js";
+import ReservationsData from './components/reservation/ReservationsData.js'
+import NewReservation from "./components/reservation/NewReservation.js";
+import EditReservation from "./components/reservation/EditReservation.js";
 
 function App() {
   return (
@@ -16,7 +18,10 @@ function App() {
         <Route path="/order/new/:customerId" element= {<NewOrder/>}> </Route>
         <Route path="/order/:id" element ={<EditOrder/>}> </Route>
         <Route path="/customerCheck/:checkFor" element ={<CustomerAuthentication/>}></Route>
-        <Route path="/reservation/new/:customerId" element ={<ReservationForm/>}></Route>
+        <Route path="/reservation/new/:customerId" element ={<NewReservation/>}></Route>
+        <Route path="/reservation/edit/:Id" element ={<EditReservation/>}></Route>
+        <Route path="/reservations/data/:status" element ={<ReservationsData/>}></Route>
+
 
       </Routes>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
