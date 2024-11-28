@@ -1,0 +1,31 @@
+.table-map{
+    grid-column: 1/4;
+    grid-row: 1/7;
+    background: rgb(255,101,0);
+    background: linear-gradient(159deg, rgba(255,101,0,1) 35%, rgba(255,174,121,1) 100%);
+        border-radius: 2em;
+    margin: 0 1em 1em 1em;
+    box-shadow: 1px 1px 3px black;
+    overflow: scroll;
+
+
+}
+
+.table-map h1{
+    padding: 2% 3% 3% 10%;
+}
+
+.tables{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    width: 95%;
+    height: fit-content;
+}
+
+.tables img{
+    width: 30%;
+    height: 18%;
+    padding: 1% 4.16% 4% 4.16%;
+}

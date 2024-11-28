@@ -1,0 +1,91 @@
+.reservation-container{
+    grid-column: 1/4;
+    grid-row: 7/10;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px black;
+    margin: 1em;
+    display: grid;
+    grid-template-columns:repeat(5, 20%);
+    grid-template-rows: repeat(3, 33%);
+    box-shadow: 1px 1px 3px black;
+}
+
+.reservation-btn-container{
+    grid-column: 1/2;
+    grid-row: 1/4;
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-reservation{
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30%;
+    border-radius: 1.5em !important;
+}
+
+.btn-add-res{
+    background-color:#E9E9E9 ;
+}
+
+
+
+.btn-enter img{
+    width: 4em;
+    max-height: 90%;
+    max-width: 100%;
+}
+
+.reservations{
+    margin: 1em;
+
+}
+
+.reservations-heading{
+    margin: 10px;
+    line-height: 26px;
+    display: flex;
+    font-size: 24px;
+    justify-content: space-evenly;
+}
+
+.scheduled-reservations{
+    background-color:#E9E9E9 ;
+    grid-row: 1/3;
+    grid-column: 2/4;
+}
+
+
+.completed-reservations{
+    color: #FFFFFF;
+    background-color:#3ADB93 ;
+    grid-row: 1/3;
+    grid-column: 4/6;
+}
+
+.completed-reservations i{
+    color: white;
+}
+
+.ongoing-reservations{
+    background-color:#E9E9E9 ;
+    grid-row: 3/4;
+    grid-column: 2/6;
+}
+
+.count{
+    margin: 20px 0 0 38px;
+    font-size: 40px;
+}
+
+i{
+    color: black ;
+}
+
+.ongoing-reservations .count{
+    margin: 0%;
+}

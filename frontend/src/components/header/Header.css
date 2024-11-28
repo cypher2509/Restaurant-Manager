@@ -1,8 +1,12 @@
 .Header{
-    background-color: wheat;
+    background-color: #F8F4F4;
     display: flex;
     align-items: center;
     justify-content: space-between;   
+}
+
+.Header p{
+    margin: 0px ;
 }
 
 .logo{

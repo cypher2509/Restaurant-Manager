@@ -1,0 +1,81 @@
+.newOrder-container{
+    min-height: 92vh;
+    background-color: #F8F4F4;
+}
+
+.newOrder-form{
+    background-color: white;
+    margin: 5vh 5vw ;
+    padding: 2vh;
+    width: 60%;
+    box-shadow: 1px 1px 3px black;
+
+}
+
+.menuItems{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.menuItem-img{
+    height: 50%;
+    border-radius: 2em !important   ;
+
+}
+
+.card{
+    margin: 0.5em;
+    height: 22rem;
+    width: 15%;
+    border-radius: 2em !important   ;
+    min-width: 140px!important;
+    box-shadow: 0.5px 1px black;
+
+}
+
+.add-btn{
+    width: 80%;
+    position: absolute;
+    bottom: 15px;
+    box-shadow: 1px 1px 3px black;
+}
+
+.order-details{
+    background-color: white;
+    height: 60%;
+    width: 25vw;
+    margin: 5vh 0;
+    padding: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 1px 1px 3px black;
+
+}
+
+.summary-container{
+
+    background-color: white;
+}
+
+.summary{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.submitOrder-btn{
+    width: 80%;
+    margin: 5em 10% 1em 10% ;
+    background-color: #3ADB93 !important;
+    box-shadow: 1px 1px 3px black;
+
+}
+
+.menuItem-btn{
+    background-color: #FF6500!important;
+}
