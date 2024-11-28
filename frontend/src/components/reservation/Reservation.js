@@ -4,14 +4,10 @@ import axios from "axios";
 import "./reservation.css";
 
 function Reservation(){
-    const [scheduled_reservations, setScheduled_reservations] = useState([]);
-    const [completed_reservations, setCompleted_reservations] = useState([]);
-    const [ongoing_reservations, setongoing_reservations] = useState([]);
 
     const [scheduled_reservations_count, setScheduled_reservations_count] = useState(0);
     const [completed_reservations_count, setCompleted_reservations_count] = useState(0);
     const [ongoing_reservations_count, setongoing_reservations_count] = useState(0);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // Run useEffect only once when the component mounts
@@ -28,24 +24,20 @@ function Reservation(){
                     fetchOngoing
                 ]);
 
+                console.log('scheduled res: ',scheduledRes.data.reservations.length);
+
                 setScheduled_reservations_count(scheduledRes.data.reservations.length);
                 setCompleted_reservations_count(completedRes.data.reservations.length);
                 setongoing_reservations_count(ongoingRes.data.reservations.length);
 
-                setScheduled_reservations(scheduledRes.data.reservations);
-                setCompleted_reservations(completedRes.data.reservations);
-                setongoing_reservations(ongoingRes.data.reservations);
-
-                setLoading(false);
             } catch (err) {
                 console.error('Error fetching reservations:', err);
-                setError('Failed to fetch reservations');
-                setLoading(false);
+
             }
         };
 
         fetchReservations();
-    }, []); // Empty dependency array ensures this runs only once
+    }, []);
 
     return (
         <div className="reservation-container">

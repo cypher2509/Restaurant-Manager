@@ -37,16 +37,44 @@ router.get('/usage/:id', async(req,res,next)=> {
         next(err);
 }});
 
-router.get('/ordered', async(req,res,next)=>{
+router.get('/ordered/:page', async(req,res,next)=>{
     try{
-        const query = 'SELECT * FROM inventory_orders';
-        const [rows] = await db.query(query);
+        const page = [req.params.page]
+        const offset = (page-1) * 25; //limits only 50 rows per page.
+        const query = 'SELECT * FROM inventory_order_details ORDER BY order_date DESC LIMIT 25 OFFSET ?;';
+        const [rows] = await db.query(query,[offset]);
         res.json(rows);
     }
     catch (err) {
         next(err);
 }
 })
+
+router.post('/order', async (req, res, next) => {
+    try {
+        // Extract required fields from the request body
+        const { inventory_item_id, cost_per_unit, quantity } = req.body;
+
+        // Validate input
+        if (!inventory_item_id || !cost_per_unit || !quantity) {
+            return res.status(400).json({ error: 'Missing required fields.' });
+        }
+
+        // SQL query to insert into inventory_orders
+        const query = `
+            INSERT INTO inventory_orders (inventory_item_id, cost_per_unit, quantity)
+            VALUES (?, ?, ?)
+        `;
+
+        // Execute the query with values
+        await db.execute(query, [inventory_item_id, cost_per_unit, quantity]);
+
+        res.status(201).json({ message: 'Inventory order created successfully!' });
+    } catch (error) {
+        console.error('Error inserting order:', error);
+        res.status(500).json({ error: 'An error occurred while creating the order.' });
+    }
+});
 
 
 module.exports = router;

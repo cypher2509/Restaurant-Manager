@@ -2,7 +2,7 @@ body{
     background-color: #f9f9f9 ;
 }
 
-.inventory-table-container {
+.inventory-container {
     margin: 20px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -25,10 +25,6 @@ body{
     text-align: left;
 }
 
-.inventory-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
 
 .status {
     padding: 5px 10px;

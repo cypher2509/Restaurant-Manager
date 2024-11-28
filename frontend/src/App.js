@@ -9,6 +9,9 @@ import ReservationsData from './components/reservation/ReservationsData.js'
 import NewReservation from "./components/reservation/NewReservation.js";
 import EditReservation from "./components/reservation/EditReservation.js";
 import InventoryTable from "./components/inventory/inventoryTable.js";
+import OrderedInventory from "./components/inventory/OrderedInventory.js";
+import NewInventoryOrder from "./components/inventory/NewOrderInventory.js";
+
 
 function App() {
   return (
@@ -23,6 +26,8 @@ function App() {
         <Route path="/reservation/edit/:Id" element ={<EditReservation/>}></Route>
         <Route path="/reservations/data/:status" element ={<ReservationsData/>}></Route>
         <Route path="/inventory/data" element ={<InventoryTable/>}></Route>
+        <Route path="/inventory/ordered" element ={<OrderedInventory/>}></Route>
+        <Route path="/inventory/ordered/new" element ={<NewInventoryOrder/>}></Route>
 
 
       </Routes>

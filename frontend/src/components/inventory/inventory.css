@@ -1,4 +1,4 @@
-.inventory-container{
+.inventory-card-container{
     grid-column: 8/10;
     grid-row: 7/10;
     margin: 0.5em;

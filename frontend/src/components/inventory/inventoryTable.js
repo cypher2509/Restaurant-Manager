@@ -6,24 +6,25 @@ import './inventoryTable.css';
 function InventoryTable() {
     const [inventoryItems, setInventoryItems] = useState([]);
 
-    useEffect(() => {
-        document.body.style.backgroundColor = '#f9f9f9';
+    document.body.style.backgroundColor = '#f9f9f9';
 
+    useEffect(()=>{
         const fetchInventoryData = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/inventory'); // Replace with your actual API endpoint
                 setInventoryItems(response.data);
+                console.log('fetching inventory data')
             } catch (error) {
                 console.error('Error fetching inventory data:', error);
             }
         };
-
+    
         fetchInventoryData();
-    }, []);
+    },[])
 
     return (
-        <div className="inventory-table-container col-8 offset-2">
-            <h1>Inventory Items</h1>
+        <div className="inventory-container col-8 offset-2">
+            <h1>Stock</h1>
             <table className="inventory-table">
                 <thead>
                     <tr>
@@ -54,10 +55,10 @@ function InventoryTable() {
             </table>
 
             <div className='order-actions'>
-                <form>
+                <form action='/inventory/ordered'>
                         <button className='order-btn btn btn-primary'>check ordered inventory</button>
                 </form>
-                <form >
+                <form action='/inventory/ordered/new'>
                         <button className='order-btn btn btn-primary'>order inventory</button>
                 </form >
             </div>
