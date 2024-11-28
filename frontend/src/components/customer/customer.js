@@ -53,13 +53,13 @@ function CustomerAuthentication() {
             if (response.data && response.data.customerId) {
                 setError(''); // Clear error
                 // Redirect to homepage
-                navigate(`/${checkFor}/new/${response.data.customer.id}`);
+                navigate(`/${checkFor}/new/${response.data.customerId}`);
             } else {
                 setError('Failed to create customer.');
             }
         } catch (err) {
             // Handle errors
-            setError('An error occurred while creating the customer.');
+            setError(err.response.data.error);
             console.error(err);
         }
     };

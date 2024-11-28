@@ -1,15 +1,21 @@
+body{
+    background-color: #f9f9f9 ;
+}
+
 .inventory-table-container {
     margin: 20px;
     padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    border-radius: 2em;
+    background-color: white;
+    box-shadow: 1px 1px 3px black;
 }
 
 .inventory-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    border-radius: 2em !important;
 }
 
 .inventory-table th,
@@ -38,4 +44,14 @@
 .status.in-stock {
     background-color: #ccffcc;
     color: #006600;
+}
+
+
+.order-actions{
+    display: flex;
+    justify-content:end;
+}
+
+.order-btn{
+    margin: 1em;
 }
