@@ -1,0 +1,14 @@
+.staff-management-container{
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 2em;
+    background-color: white;
+    box-shadow: 1px 1px 3px black;
+}
+
+.staff-management-table{
+    max-height: 40vh;
+    overflow: scroll;
+}
+

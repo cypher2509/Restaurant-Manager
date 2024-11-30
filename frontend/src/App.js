@@ -11,7 +11,10 @@ import EditReservation from "./components/reservation/EditReservation.js";
 import InventoryTable from "./components/inventory/inventoryTable.js";
 import OrderedInventory from "./components/inventory/OrderedInventory.js";
 import NewInventoryOrder from "./components/inventory/NewOrderInventory.js";
-
+import StaffManagement from "./components/staff/StaffManagement.js";
+import NewEmployee from "./components/staff/NewEmployee.js";
+import NewShift from "./components/staff/NewShift.js";
+import EditShift from "./components/staff/EditShift.js";
 
 function App() {
   return (
@@ -28,7 +31,10 @@ function App() {
         <Route path="/inventory/data" element ={<InventoryTable/>}></Route>
         <Route path="/inventory/ordered" element ={<OrderedInventory/>}></Route>
         <Route path="/inventory/ordered/new" element ={<NewInventoryOrder/>}></Route>
-
+        <Route path="/staffManagement" element={<StaffManagement/>}></Route>
+        <Route path="/employees/new" element={<NewEmployee/>}></Route>
+        <Route path="/shifts/new" element={<NewShift />}></Route>
+        <Route path="/shifts/edit/:id" element={<EditShift />}></Route>
 
       </Routes>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
