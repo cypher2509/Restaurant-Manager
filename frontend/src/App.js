@@ -15,6 +15,7 @@ import StaffManagement from "./components/staff/StaffManagement.js";
 import NewEmployee from "./components/staff/NewEmployee.js";
 import NewShift from "./components/staff/NewShift.js";
 import EditShift from "./components/staff/EditShift.js";
+import ViewReports from "./components/reports/ViewReports.js";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/employees/new" element={<NewEmployee/>}></Route>
         <Route path="/shifts/new" element={<NewShift />}></Route>
         <Route path="/shifts/edit/:id" element={<EditShift />}></Route>
+        <Route path="/reports" element={<ViewReports />}></Route>
 
       </Routes>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
