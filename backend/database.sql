@@ -6,6 +6,7 @@ USE restaurant_db;
 -- drop table inventory_usage;
 -- drop table menu_items;
 -- drop table orders;
+-- drop table shift_history_ibfk;
 -- drop table shifts;
 -- drop TABLE employees;
 -- drop table reservations;
@@ -59,6 +60,8 @@ CREATE TABLE IF NOT EXISTS orders (
 	FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
 
+
+
 -- Order Items Table (many-to-many relationship between orders and menu items)
 CREATE TABLE IF NOT EXISTS order_items (
     id INT PRIMARY KEY auto_increment,
@@ -79,6 +82,7 @@ CREATE TABLE IF NOT EXISTS employees (
     email VARCHAR(100) UNIQUE NOT NULL
 );
 
+select * from employees limit 10;
 -- Restaurant Tables Table
 CREATE TABLE IF NOT EXISTS restaurant_tables (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -148,7 +152,7 @@ CREATE TABLE IF NOT EXISTS inventory_orders(
     inventory_item_id INT NOT NULL,
     cost_per_unit INT NOT NULL,
     quantity INT NOT NULL,
-    order_date DATE NOT NULL,
+    order_date DATE NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (inventory_item_id) REFERENCES inventory_items(id)
 );
 
@@ -338,6 +342,23 @@ JOIN orders o ON c.id = o.customer_id
 JOIN order_items oi ON o.id = oi.order_id
 JOIN menu_items mi ON oi.menu_item_id = mi.id;
 
+CREATE OR REPLACE VIEW inventory_order_details AS
+SELECT 
+    io.id AS order_id,
+    io.inventory_item_id,
+    ii.name AS inventory_item_name,
+    io.cost_per_unit,
+    io.quantity AS ordered_quantity,
+    io.order_date
+FROM 
+    inventory_orders io
+JOIN 
+    inventory_items ii
+ON 
+    io.inventory_item_id = ii.id;
+
+select * from inventory_order_details limit 50;
+
 CREATE TABLE IF NOT EXISTS shifts (
     id INT PRIMARY KEY AUTO_INCREMENT,
     employee_id INT NOT NULL,
@@ -348,10 +369,59 @@ CREATE TABLE IF NOT EXISTS shifts (
     FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
 );
 
+select * from shifts;
 
--- transaction query for shifts table
+-- 1. Finding the Busiest Day of the Week
+SELECT 
+    DAYNAME(date) AS day_of_week,
+    COUNT(*) AS total_reservations
+FROM 
+    reservations
+GROUP BY 
+    day_of_week
+ORDER BY 
+    total_reservations DESC;
 
-USE restaurant_db;
+DELIMITER $$
+CREATE PROCEDURE GetTotalReservationsByDay()
+BEGIN
+    SELECT 
+        DAYNAME(date) AS day_of_week,
+        COUNT(*) AS total_reservations
+    FROM 
+        reservations
+    GROUP BY 
+        day_of_week
+    ORDER BY 
+        total_reservations DESC;
+END$$
+
+DELIMITER ;
+CALL GetTotalReservationsByDay();
+
+
+DELIMITER $$
+
+CREATE PROCEDURE GetTopInventoryItemsUsed()
+BEGIN
+    SELECT 
+        ii.id AS inventory_item_id,
+        ii.name AS inventory_item_name,
+        SUM(iu.usage_quantity) AS total_used
+    FROM 
+        inventory_items ii
+    JOIN 
+        inventory_usage iu ON ii.id = iu.inventory_item_id
+    GROUP BY 
+        ii.id, ii.name
+    ORDER BY 
+        total_used DESC
+    LIMIT 5;
+END $$
+
+DELIMITER ;
+
+call gettopInventoryItemsUsed();
 
 -- Audit table for shift changes
 CREATE TABLE shift_history (
@@ -613,3 +683,9 @@ BEGIN
 END //
 
 DELIMITER ;
+
+CREATE INDEX idx_status ON orders(status) ;
+CREATE INDEX idx_customer_id ON orders(customer_id) ;
+CREATE INDEX idx_created_at ON orders(created_at);
+
+SHOW INDEXES FROM orders;
