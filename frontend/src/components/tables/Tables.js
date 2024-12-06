@@ -28,7 +28,7 @@ function Tables(){
             <h1>tables</h1>
             <div className="tables">
                 {tables.map(table => (
-                <img src="table.png"  key={table.id} style={{ opacity: table.isBooked ? '50%' : '100%' }}></img>
+                <img src="table.png"  key={table.id} style={{ opacity: table.available==0 ? '50%' : '100%' }}></img>
                 ))}
             </div>
         </div>
