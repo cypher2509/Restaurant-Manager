@@ -12,6 +12,10 @@ The primary goals are to:
 * Improve staff management with integrated scheduling and performance tracking.
 * Facilitate data-driven decision-making for menu planning and business strategy.
 
+## ERD ##
+![Copy of Your paragraph text (4)](https://github.com/user-attachments/assets/9a4d1c51-cb77-436b-9a19-f3004036e253)
+
+
 **Features:**
 
 Menu Management:
